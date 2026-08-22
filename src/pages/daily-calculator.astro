@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import DailyCalc from '../components/DailyCalc.astro';
+---
+
+<Layout title="Daily Calorie Calculator - BMR & TDEE Requirements" description="Calculate your daily calorie requirements to maintain, lose, or gain weight using standard Mifflin-St Jeor and Katch-McArdle clinical metabolic formulas.">
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative w-full overflow-hidden bg-canvas py-12 md:py-16 border-b border-hairline">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_30%_20%,rgba(80,227,194,0.05)_0px,transparent_50%),radial-gradient(at_70%_20%,rgba(121,40,202,0.04)_0px,transparent_50%)] pointer-events-none"></div>
+
+    <div class="w-full max-w-4xl mx-auto px-6 text-center relative z-10 space-y-4">
+      <span class="inline-flex items-center gap-1.5 font-caption-mono text-xs text-body bg-canvas-soft-2 border border-hairline px-3 py-1 rounded-full">
+        General Calorie Needs
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg max-w-xl mx-auto leading-none">
+        Daily Calorie Calculator.
+      </h1>
+      <p class="text-sm md:text-base text-body max-w-lg mx-auto leading-relaxed">
+        Input your gender, physical metrics, and activity multiplier to receive a complete baseline of BMR, TDEE, weight management plans, and customized macros.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator content section -->
+  <section class="w-full py-16 bg-canvas-soft">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <DailyCalc />
+    </div>
+  </section>
+
+  <!-- Educational content -->
+  <section class="w-full py-12 md:py-16 bg-canvas border-t border-hairline">
+    <div class="w-full max-w-3xl mx-auto px-6 space-y-6 text-sm text-body leading-relaxed">
+      <h3 class="text-lg font-bold text-ink font-display-sm">Determining Daily Calorie Budgets</h3>
+      <p>
+        Your daily calorie requirement is also known as your <strong>Total Daily Energy Expenditure (TDEE)</strong>. It is the total sum of calories your body burns in a 24-hour cycle. TDEE is computed based on your BMR (calories burned at rest) multiplied by an activity factor which represents the energy cost of your physical movements.
+      </p>
+      <p>
+        Once you calculate your TDEE, you can use it to map out your body composition goals:
+      </p>
+      <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li><strong>Maintenance:</strong> Consuming exactly your TDEE calories per day. This keeps your weight stable.</li>
+        <li><strong>Weight Loss (Caloric Deficit):</strong> Eating fewer calories than your TDEE (commonly 250 to 500 kcal less per day). This forces your body to burn fat tissue for fuel.</li>
+        <li><strong>Weight Gain (Caloric Surplus):</strong> Eating more calories than your TDEE (commonly 250 to 500 kcal more per day) to support muscle hypertrophy or healthy mass gain.</li>
+      </ul>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

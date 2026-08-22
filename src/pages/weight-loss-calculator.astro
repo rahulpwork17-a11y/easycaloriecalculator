@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WeightLossCalc from '../components/WeightLossCalc.astro';
+---
+
+<Layout title="Weight Loss Calorie Calculator - Healthy Deficit Calculator" description="Compute your recommended daily caloric deficit and estimate your weight loss timeline based on clinical metabolic guidelines.">
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative w-full overflow-hidden bg-canvas py-12 md:py-16 border-b border-hairline">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_30%_20%,rgba(238,0,0,0.04)_0px,transparent_50%),radial-gradient(at_70%_20%,rgba(121,40,202,0.04)_0px,transparent_50%)] pointer-events-none"></div>
+
+    <div class="w-full max-w-4xl mx-auto px-6 text-center relative z-10 space-y-4">
+      <span class="inline-flex items-center gap-1.5 font-caption-mono text-xs text-error-deep bg-error-soft/30 border border-error/15 px-3 py-1 rounded-full">
+        Caloric Deficits & Goals
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg max-w-xl mx-auto leading-none">
+        Weight Loss Calorie Calculator.
+      </h1>
+      <p class="text-sm md:text-base text-body max-w-lg mx-auto leading-relaxed">
+        Establish a precise, clinical caloric deficit. Define your target weight goals and get estimated timelines to reach your destination safely and sustainably.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator content section -->
+  <section class="w-full py-16 bg-canvas-soft">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <WeightLossCalc />
+    </div>
+  </section>
+
+  <!-- Educational content -->
+  <section class="w-full py-12 md:py-16 bg-canvas border-t border-hairline">
+    <div class="w-full max-w-3xl mx-auto px-6 space-y-6 text-sm text-body leading-relaxed">
+      <h3 class="text-lg font-bold text-ink font-display-sm">Understanding Sustainable Deficits</h3>
+      <p>
+        Weight loss occurs when your body experiences a negative energy balance (caloric deficit), meaning you burn more calories than you consume. When this happens, your body draws on stored adipose tissue (fat) to meet its remaining metabolic needs.
+      </p>
+      <p>
+        Clinical guidelines recommend aiming for a gradual fat loss rate of <strong>0.5 to 2.0 pounds (0.25 to 1 kg) per week</strong>. Here is why:
+      </p>
+      <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li><strong>Muscle Retention:</strong> Extreme deficits force your body to metabolize amino acids (lean muscle mass) for fuel. Gradual deficits conserve active muscle tissue, keeping your metabolic rate high.</li>
+        <li><strong>Metabolic Adaptations:</strong> Drastic calorie cuts trigger adaptive thermogenesis (starvation response), causing your body to down-regulate thyroid output and burn fewer baseline calories.</li>
+        <li><strong>Hormonal Regulation:</strong> Sustainable deficits protect leptin (fullness hormone) and ghrelin (hunger hormone) balances, preventing intense cravings and post-diet weight rebound.</li>
+      </ul>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

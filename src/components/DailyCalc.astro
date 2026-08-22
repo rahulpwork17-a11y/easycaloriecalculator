@@ -1,5 +1,5 @@
 ---
-// CalorieCalculator.astro
+// DailyCalc.astro
 ---
 
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full max-w-6xl mx-auto">
@@ -549,18 +549,18 @@
     const KJ_CONVERSION_FACTOR = 4.1868;
 
     // Unit toggle logic
-    btnUs.addEventListener('click', () => {
+    btnUs?.addEventListener('click', () => {
       if (isUsUnits) return;
       isUsUnits = true;
       btnUs.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
       btnUs.classList.remove('text-body', 'hover:text-ink');
-      btnMetric.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
-      btnMetric.classList.add('text-body', 'hover:text-ink');
+      btnMetric?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnMetric?.classList.add('text-body', 'hover:text-ink');
 
-      heightUsContainer.classList.remove('hidden');
-      heightMetricContainer.classList.add('hidden');
-      labelWeight.textContent = "Weight (pounds)";
-      badgeWeight.textContent = "lbs";
+      heightUsContainer?.classList.remove('hidden');
+      heightMetricContainer?.classList.add('hidden');
+      if (labelWeight) labelWeight.textContent = "Weight (pounds)";
+      if (badgeWeight) badgeWeight.textContent = "lbs";
 
       // Convert values currently in the form fields
       const currentCm = parseFloat(inputHeightCm.value);
@@ -578,18 +578,18 @@
       }
     });
 
-    btnMetric.addEventListener('click', () => {
+    btnMetric?.addEventListener('click', () => {
       if (!isUsUnits) return;
       isUsUnits = false;
       btnMetric.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
       btnMetric.classList.remove('text-body', 'hover:text-ink');
-      btnUs.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
-      btnUs.classList.add('text-body', 'hover:text-ink');
+      btnUs?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnUs?.classList.add('text-body', 'hover:text-ink');
 
-      heightUsContainer.classList.add('hidden');
-      heightMetricContainer.classList.remove('hidden');
-      labelWeight.textContent = "Weight (kg)";
-      badgeWeight.textContent = "kg";
+      heightUsContainer?.classList.add('hidden');
+      heightMetricContainer?.classList.remove('hidden');
+      if (labelWeight) labelWeight.textContent = "Weight (kg)";
+      if (badgeWeight) badgeWeight.textContent = "kg";
 
       // Convert values currently in the form fields
       const ft = parseFloat(inputHeightFt.value) || 0;
@@ -606,7 +606,7 @@
     });
 
     // Toggle advanced settings foldout
-    btnToggleSettings.addEventListener('click', () => {
+    btnToggleSettings?.addEventListener('click', () => {
       const isHidden = settingsDrawer.classList.contains('hidden');
       if (isHidden) {
         settingsDrawer.classList.remove('hidden');
@@ -618,23 +618,23 @@
     });
 
     // Formula selection triggers body fat field display
-    inputFormula.addEventListener('change', () => {
+    inputFormula?.addEventListener('change', () => {
       if (inputFormula.value === 'katch') {
-        bodyFatContainer.classList.remove('hidden');
+        bodyFatContainer?.classList.remove('hidden');
       } else {
-        bodyFatContainer.classList.add('hidden');
+        bodyFatContainer?.classList.add('hidden');
       }
     });
 
     // Calculation triggers
-    btnCalculate.addEventListener('click', runCalculations);
+    btnCalculate?.addEventListener('click', runCalculations);
     
     // Macro recalculation triggers on dropdown changes
-    macroSelectPlan.addEventListener('change', updateMacros);
-    macroSelectDiet.addEventListener('change', updateMacros);
+    macroSelectPlan?.addEventListener('change', updateMacros);
+    macroSelectDiet?.addEventListener('change', updateMacros);
 
     // Clear form fields
-    btnClear.addEventListener('click', () => {
+    btnClear?.addEventListener('click', () => {
       inputAge.value = "25";
       inputHeightFt.value = "5";
       inputHeightIn.value = "10";
@@ -642,7 +642,7 @@
       inputWeight.value = isUsUnits ? "165" : "65";
       inputActivity.value = "1.465";
       inputFormula.value = "mifflin";
-      bodyFatContainer.classList.add('hidden');
+      bodyFatContainer?.classList.add('hidden');
       inputBodyFat.value = "20";
       
       // Select first option for radio buttons
@@ -650,8 +650,8 @@
       if (radCalories) radCalories.checked = true;
       
       // Hide results dashboard and show empty state
-      resultsActive.classList.add('hidden');
-      resultsEmpty.classList.remove('hidden');
+      resultsActive?.classList.add('hidden');
+      resultsEmpty?.classList.remove('hidden');
       computedMaintenance = 0;
     });
 
@@ -741,16 +741,15 @@
       const unitText = resultsUnit === 'kilojoules' ? 'kJ' : 'kcal';
 
       // Update Unit Headers
-      resultUnitLabel.textContent = unitLabel;
+      if (resultUnitLabel) resultUnitLabel.textContent = unitLabel;
       resultUnitTexts.forEach(el => el.textContent = unitText);
       resultUnitAbbrs.forEach(el => el.textContent = unitText);
 
       // Render Primary values
-      resultCalories.textContent = Math.round(computedMaintenance * unitMultiplier).toLocaleString();
-      resultBmr.textContent = Math.round(bmr * unitMultiplier).toLocaleString();
+      if (resultCalories) resultCalories.textContent = Math.round(computedMaintenance * unitMultiplier).toLocaleString();
+      if (resultBmr) resultBmr.textContent = Math.round(bmr * unitMultiplier).toLocaleString();
 
       // Render Weight Goal items (Losses and Gains)
-      // Standard targets are: Mild (-250), Normal (-500), Extreme (-1000) kcal
       const plans = {
         lossMildVal: Math.max(0, computedMaintenance - 250),
         lossNormalVal: Math.max(0, computedMaintenance - 500),
@@ -760,28 +759,28 @@
         gainExtremeVal: computedMaintenance + 1000
       };
 
-      lossMild.textContent = Math.round(plans.lossMildVal * unitMultiplier).toLocaleString();
-      lossNormal.textContent = Math.round(plans.lossNormalVal * unitMultiplier).toLocaleString();
-      lossExtreme.textContent = Math.round(plans.lossExtremeVal * unitMultiplier).toLocaleString();
+      if (lossMild) lossMild.textContent = Math.round(plans.lossMildVal * unitMultiplier).toLocaleString();
+      if (lossNormal) lossNormal.textContent = Math.round(plans.lossNormalVal * unitMultiplier).toLocaleString();
+      if (lossExtreme) lossExtreme.textContent = Math.round(plans.lossExtremeVal * unitMultiplier).toLocaleString();
 
-      gainMild.textContent = Math.round(plans.gainMildVal * unitMultiplier).toLocaleString();
-      gainNormal.textContent = Math.round(plans.gainNormalVal * unitMultiplier).toLocaleString();
-      gainExtreme.textContent = Math.round(plans.gainExtremeVal * unitMultiplier).toLocaleString();
+      if (gainMild) gainMild.textContent = Math.round(plans.gainMildVal * unitMultiplier).toLocaleString();
+      if (gainNormal) gainNormal.textContent = Math.round(plans.gainNormalVal * unitMultiplier).toLocaleString();
+      if (gainExtreme) gainExtreme.textContent = Math.round(plans.gainExtremeVal * unitMultiplier).toLocaleString();
 
       // Safety Checks (Minimum calories: 1200 for males, 1000 for females in kcal)
       const minHealthyCal = gender === 'male' ? 1200 : 1000;
-      safetyMin.textContent = Math.round(minHealthyCal * unitMultiplier).toLocaleString();
+      if (safetyMin) safetyMin.textContent = Math.round(minHealthyCal * unitMultiplier).toLocaleString();
 
       const hasSafetyRisk = (plans.lossMildVal < minHealthyCal || plans.lossNormalVal < minHealthyCal || plans.lossExtremeVal < minHealthyCal);
       if (hasSafetyRisk) {
-        safetyWarning.classList.remove('hidden');
+        safetyWarning?.classList.remove('hidden');
       } else {
-        safetyWarning.classList.add('hidden');
+        safetyWarning?.classList.add('hidden');
       }
 
       // Switch views
-      resultsEmpty.classList.add('hidden');
-      resultsActive.classList.remove('hidden');
+      resultsEmpty?.classList.add('hidden');
+      resultsActive?.classList.remove('hidden');
 
       // Refresh Macro distributions
       updateMacros();
@@ -790,7 +789,6 @@
     function updateMacros() {
       if (computedMaintenance === 0) return;
 
-      // Select Target Plan Daily Calories
       const selectedPlan = macroSelectPlan.value;
       let planCal = computedMaintenance;
 
@@ -801,7 +799,6 @@
       else if (selectedPlan === 'gain-normal') planCal = computedMaintenance + 500;
       else if (selectedPlan === 'gain-extreme') planCal = computedMaintenance + 1000;
 
-      // Select Diet Percentages (Carb, Pro, Fat)
       const selectedDiet = macroSelectDiet.value;
       let pCarb = 50, pPro = 20, pFat = 30;
 
@@ -813,12 +810,10 @@
         pCarb = 5; pPro = 25; pFat = 70;
       }
 
-      // Render percentages
-      macroCarbPct.textContent = pCarb;
-      macroProPct.textContent = pPro;
-      macroFatPct.textContent = pFat;
+      if (macroCarbPct) macroCarbPct.textContent = pCarb.toString();
+      if (macroProPct) macroProPct.textContent = pPro.toString();
+      if (macroFatPct) macroFatPct.textContent = pFat.toString();
 
-      // Energy contributions (always in final output units - kJ or kcal)
       const resultsUnitElement = document.querySelector('input[name="results-unit"]:checked');
       const resultsUnit = resultsUnitElement ? resultsUnitElement.value : 'calories';
       const unitMultiplier = resultsUnit === 'kilojoules' ? KJ_CONVERSION_FACTOR : 1;
@@ -827,26 +822,21 @@
       const proEnergyVal = planCal * (pPro / 100);
       const fatEnergyVal = planCal * (pFat / 100);
 
-      macroCarbEnergy.textContent = Math.round(carbEnergyVal * unitMultiplier).toLocaleString();
-      macroProEnergy.textContent = Math.round(proEnergyVal * unitMultiplier).toLocaleString();
-      macroFatEnergy.textContent = Math.round(fatEnergyVal * unitMultiplier).toLocaleString();
+      if (macroCarbEnergy) macroCarbEnergy.textContent = Math.round(carbEnergyVal * unitMultiplier).toLocaleString();
+      if (macroProEnergy) macroProEnergy.textContent = Math.round(proEnergyVal * unitMultiplier).toLocaleString();
+      if (macroFatEnergy) macroFatEnergy.textContent = Math.round(fatEnergyVal * unitMultiplier).toLocaleString();
 
-      // Grams are ALWAYS calculated based on calories:
-      // Carbohydrates: 4 kcal per gram
-      // Proteins: 4 kcal per gram
-      // Fats: 9 kcal per gram
       const gCarb = Math.round(carbEnergyVal / 4);
       const gPro = Math.round(proEnergyVal / 4);
       const gFat = Math.round(fatEnergyVal / 9);
 
-      macroCarbGrams.textContent = gCarb.toLocaleString();
-      macroProGrams.textContent = gPro.toLocaleString();
-      macroFatGrams.textContent = gFat.toLocaleString();
+      if (macroCarbGrams) macroCarbGrams.textContent = gCarb.toLocaleString();
+      if (macroProGrams) macroProGrams.textContent = gPro.toLocaleString();
+      if (macroFatGrams) macroFatGrams.textContent = gFat.toLocaleString();
 
-      // Update progress bar widths
-      barCarb.style.width = `${pCarb}%`;
-      barPro.style.width = `${pPro}%`;
-      barFat.style.width = `${pFat}%`;
+      if (barCarb) barCarb.style.width = `${pCarb}%`;
+      if (barPro) barPro.style.width = `${pPro}%`;
+      if (barFat) barFat.style.width = `${pFat}%`;
     }
   });
 </script>

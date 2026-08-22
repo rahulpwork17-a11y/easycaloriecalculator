@@ -1,0 +1,657 @@
+---
+// MaintenanceCalc.astro
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full max-w-6xl mx-auto">
+  <!-- Inputs Card -->
+  <div class="lg:col-span-5 bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 flex flex-col justify-between">
+    <div>
+      <!-- Unit Selection (US vs Metric) -->
+      <div class="flex bg-canvas-soft-2 p-1 rounded-sm border border-hairline mb-6">
+        <button
+          type="button"
+          id="mc-toggle-us"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 bg-canvas text-ink shadow-level-2"
+        >
+          US Units
+        </button>
+        <button
+          type="button"
+          id="mc-toggle-metric"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 text-body hover:text-ink"
+        >
+          Metric Units
+        </button>
+      </div>
+
+      <!-- Main Input Form -->
+      <form id="mc-calorie-form" class="space-y-5" onsubmit="return false;">
+        <!-- Age -->
+        <div>
+          <label for="mc-input-age" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Age (years)
+          </label>
+          <input
+            type="number"
+            id="mc-input-age"
+            min="15"
+            max="80"
+            value="25"
+            required
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+          />
+          <span class="text-xs text-mute mt-1 block">Ages 15 - 80</span>
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Gender
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="mc-gender" value="male" checked class="sr-only" id="mc-gender-male" />
+              <span class="text-sm font-medium text-ink">Male</span>
+            </label>
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="mc-gender" value="female" class="sr-only" id="mc-gender-female" />
+              <span class="text-sm font-medium text-ink">Female</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Height (US: feet/inches vs Metric: cm) -->
+        <div id="mc-height-us-container" class="space-y-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative">
+              <input
+                type="number"
+                id="mc-input-height-ft"
+                min="3"
+                max="8"
+                value="5"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">ft</span>
+            </div>
+            <div class="relative">
+              <input
+                type="number"
+                id="mc-input-height-in"
+                min="0"
+                max="11"
+                value="10"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">in</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="mc-height-metric-container" class="hidden space-y-2">
+          <label for="mc-input-height-cm" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height (cm)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="mc-input-height-cm"
+              min="100"
+              max="250"
+              value="178"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">cm</span>
+          </div>
+        </div>
+
+        <!-- Weight -->
+        <div>
+          <label for="mc-input-weight" id="mc-label-weight" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Weight (pounds)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="mc-input-weight"
+              min="30"
+              max="600"
+              value="165"
+              required
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span id="mc-badge-weight" class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">lbs</span>
+          </div>
+        </div>
+
+        <!-- Activity Level -->
+        <div>
+          <label for="mc-input-activity" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Activity Level
+          </label>
+          <select
+            id="mc-input-activity"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10 cursor-pointer"
+          >
+            <option value="1">Basal Metabolic Rate (BMR)</option>
+            <option value="1.2">Sedentary: little or no exercise</option>
+            <option value="1.375">Light: exercise 1-3 times/week</option>
+            <option value="1.465" selected>Moderate: exercise 4-5 times/week</option>
+            <option value="1.55">Active: exercise or sports 6-7 times/week</option>
+            <option value="1.725">Very Active: intense exercise daily</option>
+            <option value="1.9">Extra Active: highly intense exercise daily, or physical job</option>
+          </select>
+        </div>
+
+        <!-- Advanced Drawer -->
+        <div>
+          <button
+            type="button"
+            id="mc-toggle-settings"
+            class="text-xs font-medium text-link hover:text-link-deep flex items-center gap-1 font-caption-mono py-1 focus:outline-none"
+          >
+            <span id="mc-settings-icon">+</span> Advanced Settings
+          </button>
+
+          <div id="mc-settings-drawer" class="hidden mt-3 p-4 bg-canvas-soft border border-hairline rounded-sm space-y-4 transition-all duration-200">
+            <!-- Results Unit -->
+            <div>
+              <span class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Results Unit
+              </span>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="mc-results-unit" value="calories" checked class="accent-ink" />
+                  Calories (kcal)
+                </label>
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="mc-results-unit" value="kilojoules" class="accent-ink" />
+                  Kilojoules (kJ)
+                </label>
+              </div>
+            </div>
+
+            <!-- Body Fat % (always requested for formula comparison) -->
+            <div>
+              <label for="mc-input-body-fat" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Body Fat % (For Katch-McArdle)
+              </label>
+              <div class="relative">
+                <input
+                  type="number"
+                  id="mc-input-body-fat"
+                  min="3"
+                  max="60"
+                  value="20"
+                  class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8"
+                />
+                <span class="absolute right-2 top-1.5 text-xs text-mute font-caption-mono pointer-events-none">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Submit buttons -->
+    <div class="mt-8 flex gap-4">
+      <button
+        type="button"
+        id="mc-btn-calculate"
+        class="flex-1 bg-primary text-on-primary font-medium text-sm py-3 rounded-pill hover:bg-ink hover:opacity-90 active:scale-[0.98] transition-all duration-150 cursor-pointer shadow-level-2"
+      >
+        Calculate Maintenance
+      </button>
+      <button
+        type="button"
+        id="mc-btn-clear"
+        class="bg-canvas border border-hairline text-ink font-medium text-sm px-6 py-3 rounded-pill hover:bg-canvas-soft hover:border-hairline-strong transition-all duration-150 cursor-pointer"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Dashboard -->
+  <div class="lg:col-span-7 flex flex-col">
+    <!-- Empty State -->
+    <div id="mc-results-empty" class="flex-1 bg-canvas border border-hairline shadow-level-2 rounded-lg p-10 text-center flex flex-col justify-center items-center h-full min-h-[420px] transition-all duration-300">
+      <div class="w-12 h-12 bg-canvas-soft border border-hairline rounded-full flex items-center justify-center mb-4 text-mute">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-ink mb-2">BMR & TDEE Comparison</h3>
+      <p class="text-sm text-body max-w-sm">
+        Enter your age, gender, height, and weight, then click "Calculate Maintenance" to analyze BMR and TDEE values under all clinical equations.
+      </p>
+    </div>
+
+    <!-- Active Dashboard -->
+    <div id="mc-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300">
+      <!-- Side-by-side Highlights -->
+      <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-48 h-48 bg-gradient-to-br from-cyan-soft via-violet-soft to-highlight-pink opacity-25 blur-3xl pointer-events-none rounded-full"></div>
+        
+        <span class="text-xs font-semibold uppercase tracking-wider text-mute font-caption-mono block mb-1">
+          Daily Energy Expenditure Highlights
+        </span>
+        
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <!-- BMR -->
+          <div class="border-r border-hairline pr-2">
+            <span class="text-xs text-body font-caption-mono uppercase block mb-1">Basal Metabolic Rate</span>
+            <div class="flex items-baseline">
+              <h2 id="mc-res-bmr" class="text-2xl md:text-3xl font-bold tracking-tight text-ink font-display-md leading-none">0</h2>
+              <span class="text-xs text-mute font-caption-mono ml-1 mc-unit-abbr">kcal</span>
+            </div>
+            <p class="text-[10px] text-body mt-2 leading-relaxed">
+              Energy required strictly to stay alive at complete rest.
+            </p>
+          </div>
+
+          <!-- TDEE -->
+          <div class="pl-2">
+            <span class="text-xs text-primary font-caption-mono uppercase block mb-1">Total Maintenance</span>
+            <div class="flex items-baseline">
+              <h2 id="mc-res-tdee" class="text-2xl md:text-3xl font-bold tracking-tight text-primary font-display-md leading-none">0</h2>
+              <span class="text-xs text-mute font-caption-mono ml-1 mc-unit-abbr">kcal</span>
+            </div>
+            <p class="text-[10px] text-body mt-2 leading-relaxed">
+              Calories needed to maintain weight at your activity level.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula Breakdown Cards -->
+      <div class="bg-canvas border border-hairline shadow-level-2 rounded-lg p-5 space-y-4">
+        <div class="flex items-center gap-2 border-b border-hairline pb-3">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono font-bold">
+            Comparison Across Clinical Formulas
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-center text-xs pb-1 border-b border-hairline text-mute font-caption-mono">
+          <div>Equation</div>
+          <div>BMR</div>
+          <div>TDEE (Maintenance)</div>
+        </div>
+
+        <div class="space-y-2.5">
+          <!-- Mifflin -->
+          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
+            <div class="font-bold text-ink text-left pl-2">Mifflin-St Jeor</div>
+            <div class="font-caption-mono text-body"><span id="mc-f-mifflin-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-mifflin-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+          </div>
+
+          <!-- Harris -->
+          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0 bg-canvas-soft">
+            <div class="font-bold text-ink text-left pl-2">Harris-Benedict</div>
+            <div class="font-caption-mono text-body"><span id="mc-f-harris-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-harris-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+          </div>
+
+          <!-- Katch -->
+          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
+            <div class="font-bold text-ink text-left pl-2">Katch-McArdle</div>
+            <div class="font-caption-mono text-body"><span id="mc-f-katch-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-katch-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Multipliers breakdown -->
+      <div class="bg-canvas border border-hairline shadow-level-2 rounded-lg p-5 space-y-4">
+        <div class="flex items-center gap-2 border-b border-hairline pb-3">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono font-bold">
+            Maintenance Budget By Activity Multiplier
+          </h3>
+        </div>
+
+        <div class="space-y-3">
+          <div class="grid grid-cols-12 gap-2 text-[10px] font-semibold uppercase tracking-wider text-body font-caption-mono pb-1 border-b border-hairline">
+            <div class="col-span-8">Activity Multiplier</div>
+            <div class="col-span-4 text-right">Daily Requirement</div>
+          </div>
+
+          <!-- BMR (Multiplier 1.0) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Basal Metabolic Rate</span>
+              <span class="text-xs text-mute font-caption-mono">BMR (multiplier &times; 1.0)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-bmr" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Sedentary (Multiplier 1.2) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all bg-canvas-soft">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Sedentary</span>
+              <span class="text-xs text-mute font-caption-mono">Little or no exercise (&times; 1.2)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-sedentary" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Light (Multiplier 1.375) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Light Exercise</span>
+              <span class="text-xs text-mute font-caption-mono">Exercise 1-3 times/week (&times; 1.375)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-light" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Moderate (Multiplier 1.465) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all bg-canvas-soft">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Moderate Exercise</span>
+              <span class="text-xs text-mute font-caption-mono">Exercise 4-5 times/week (&times; 1.465)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-moderate" class="font-semibold text-ink font-caption-mono font-bold text-primary">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Active (Multiplier 1.55) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Active Exercise</span>
+              <span class="text-xs text-mute font-caption-mono">Exercise or sports 6-7 times/week (&times; 1.55)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-active" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Very Active (Multiplier 1.725) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all bg-canvas-soft">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Very Active</span>
+              <span class="text-xs text-mute font-caption-mono">Intense exercise daily (&times; 1.725)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-veryactive" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+
+          <!-- Extra Active (Multiplier 1.9) -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-8">
+              <span class="font-bold text-ink block">Extra Active</span>
+              <span class="text-xs text-mute font-caption-mono">Very intense exercise daily, or physical job (&times; 1.9)</span>
+            </div>
+            <div class="col-span-4 text-right">
+              <span id="mc-act-extraactive" class="font-semibold text-ink font-caption-mono">0</span>
+              <span class="text-[10px] text-mute mc-unit-abbr">kcal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Inputs
+    const toggleUs = document.getElementById('mc-toggle-us');
+    const toggleMetric = document.getElementById('mc-toggle-metric');
+    const heightUsContainer = document.getElementById('mc-height-us-container');
+    const heightMetricContainer = document.getElementById('mc-height-metric-container');
+    const inputAge = document.getElementById('mc-input-age');
+    const inputHeightFt = document.getElementById('mc-input-height-ft');
+    const inputHeightIn = document.getElementById('mc-input-height-in');
+    const inputHeightCm = document.getElementById('mc-input-height-cm');
+    const inputWeight = document.getElementById('mc-input-weight');
+    const labelWeight = document.getElementById('mc-label-weight');
+    const badgeWeight = document.getElementById('mc-badge-weight');
+    const inputActivity = document.getElementById('mc-input-activity');
+
+    // Advanced Drawer Settings
+    const toggleSettings = document.getElementById('mc-toggle-settings');
+    const settingsDrawer = document.getElementById('mc-settings-drawer');
+    const settingsIcon = document.getElementById('mc-settings-icon');
+    const inputBodyFat = document.getElementById('mc-input-body-fat');
+
+    // View States
+    const resultsEmpty = document.getElementById('mc-results-empty');
+    const resultsActive = document.getElementById('mc-results-active');
+
+    // Primary Outputs
+    const resBmr = document.getElementById('mc-res-bmr');
+    const resTdee = document.getElementById('mc-res-tdee');
+    const unitAbbrs = document.querySelectorAll('.mc-unit-abbr');
+
+    // Formula Comparisons
+    const fMifflinBmr = document.getElementById('mc-f-mifflin-bmr');
+    const fMifflinTdee = document.getElementById('mc-f-mifflin-tdee');
+    const fHarrisBmr = document.getElementById('mc-f-harris-bmr');
+    const fHarrisTdee = document.getElementById('mc-f-harris-tdee');
+    const fKatchBmr = document.getElementById('mc-f-katch-bmr');
+    const fKatchTdee = document.getElementById('mc-f-katch-tdee');
+
+    // Activity Multipliers Outputs
+    const actBmr = document.getElementById('mc-act-bmr');
+    const actSedentary = document.getElementById('mc-act-sedentary');
+    const actLight = document.getElementById('mc-act-light');
+    const actModerate = document.getElementById('mc-act-moderate');
+    const actActive = document.getElementById('mc-act-active');
+    const actVeryActive = document.getElementById('mc-act-veryactive');
+    const actExtraActive = document.getElementById('mc-act-extraactive');
+
+    // Action buttons
+    const btnCalculate = document.getElementById('mc-btn-calculate');
+    const btnClear = document.getElementById('mc-btn-clear');
+
+    let isUsUnits = true;
+    const KJ_CONVERSION = 4.1868;
+
+    // Unit toggle logic
+    toggleUs?.addEventListener('click', () => {
+      if (isUsUnits) return;
+      isUsUnits = true;
+      toggleUs.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleUs.classList.remove('text-body', 'hover:text-ink');
+      toggleMetric?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleMetric?.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer?.classList.remove('hidden');
+      heightMetricContainer?.classList.add('hidden');
+      if (labelWeight) labelWeight.textContent = "Weight (pounds)";
+      if (badgeWeight) badgeWeight.textContent = "lbs";
+
+      const currentCm = parseFloat(inputHeightCm.value);
+      if (!isNaN(currentCm) && currentCm > 0) {
+        const totalInches = currentCm / 2.54;
+        inputHeightFt.value = Math.floor(totalInches / 12);
+        inputHeightIn.value = Math.round(totalInches % 12) === 12 ? 11 : Math.round(totalInches % 12);
+      }
+
+      const currentKg = parseFloat(inputWeight.value);
+      if (!isNaN(currentKg) && currentKg > 0) {
+        inputWeight.value = Math.round(currentKg * 2.20462);
+      }
+    });
+
+    toggleMetric?.addEventListener('click', () => {
+      if (!isUsUnits) return;
+      isUsUnits = false;
+      toggleMetric.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleMetric.classList.remove('text-body', 'hover:text-ink');
+      toggleUs?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleUs?.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer?.classList.add('hidden');
+      heightMetricContainer?.classList.remove('hidden');
+      if (labelWeight) labelWeight.textContent = "Weight (kg)";
+      if (badgeWeight) badgeWeight.textContent = "kg";
+
+      const ft = parseFloat(inputHeightFt.value) || 0;
+      const inch = parseFloat(inputHeightIn.value) || 0;
+      const totalInches = (ft * 12) + inch;
+      if (totalInches > 0) {
+        inputHeightCm.value = Math.round(totalInches * 2.54);
+      }
+
+      const currentLbs = parseFloat(inputWeight.value);
+      if (!isNaN(currentLbs) && currentLbs > 0) {
+        inputWeight.value = Math.round(currentLbs / 2.20462);
+      }
+    });
+
+    toggleSettings?.addEventListener('click', () => {
+      const isHidden = settingsDrawer.classList.contains('hidden');
+      if (isHidden) {
+        settingsDrawer.classList.remove('hidden');
+        settingsIcon.textContent = '-';
+      } else {
+        settingsDrawer.classList.add('hidden');
+        settingsIcon.textContent = '+';
+      }
+    });
+
+    btnCalculate?.addEventListener('click', () => {
+      const age = parseInt(inputAge.value);
+      if (isNaN(age) || age < 15 || age > 80) {
+        alert("Please enter a valid age between 15 and 80.");
+        inputAge.focus();
+        return;
+      }
+
+      const genderElement = document.querySelector('input[name="mc-gender"]:checked');
+      const gender = genderElement ? genderElement.value : 'male';
+
+      let heightCm = 0;
+      if (isUsUnits) {
+        const ft = parseFloat(inputHeightFt.value);
+        const inch = parseFloat(inputHeightIn.value);
+        if (isNaN(ft) || ft < 3 || ft > 8 || isNaN(inch) || inch < 0 || inch >= 12) {
+          alert("Please enter a valid height in feet (3 - 8) and inches (0 - 11).");
+          inputHeightFt.focus();
+          return;
+        }
+        heightCm = ((ft * 12) + inch) * 2.54;
+      } else {
+        heightCm = parseFloat(inputHeightCm.value);
+        if (isNaN(heightCm) || heightCm < 100 || heightCm > 250) {
+          alert("Please enter a valid height in cm (100 - 250).");
+          inputHeightCm.focus();
+          return;
+        }
+      }
+
+      let currentWeightKg = 0;
+      const weightVal = parseFloat(inputWeight.value);
+      if (isNaN(weightVal) || weightVal < 30 || weightVal > 600) {
+        alert("Please enter a valid weight (30 - 600).");
+        inputWeight.focus();
+        return;
+      }
+      if (isUsUnits) {
+        currentWeightKg = weightVal / 2.20462;
+      } else {
+        currentWeightKg = weightVal;
+      }
+
+      const activityFactor = parseFloat(inputActivity.value);
+      const resultsUnitElement = document.querySelector('input[name="mc-results-unit"]:checked');
+      const resultsUnit = resultsUnitElement ? resultsUnitElement.value : 'calories';
+
+      const bodyFat = parseFloat(inputBodyFat.value) || 20;
+
+      // 1. Calculate Mifflin
+      let bmrMifflin = 0;
+      if (gender === 'male') {
+        bmrMifflin = (10 * currentWeightKg) + (6.25 * heightCm) - (5 * age) + 5;
+      } else {
+        bmrMifflin = (10 * currentWeightKg) + (6.25 * heightCm) - (5 * age) - 161;
+      }
+      const tdeeMifflin = bmrMifflin * activityFactor;
+
+      // 2. Calculate Harris
+      let bmrHarris = 0;
+      if (gender === 'male') {
+        bmrHarris = 88.362 + (13.397 * currentWeightKg) + (4.799 * heightCm) - (5.677 * age);
+      } else {
+        bmrHarris = 447.593 + (9.247 * currentWeightKg) + (3.098 * heightCm) - (4.330 * age);
+      }
+      const tdeeHarris = bmrHarris * activityFactor;
+
+      // 3. Calculate Katch
+      const leanMass = currentWeightKg * (1 - (bodyFat / 100));
+      const bmrKatch = 370 + (21.6 * leanMass);
+      const tdeeKatch = bmrKatch * activityFactor;
+
+      // Primary outputs use Mifflin as default recommended BMR
+      const primaryBmr = bmrMifflin;
+      const primaryTdee = tdeeMifflin;
+
+      // Multiplier
+      const mult = resultsUnit === 'kilojoules' ? KJ_CONVERSION : 1;
+      const uAbbr = resultsUnit === 'kilojoules' ? 'kJ' : 'kcal';
+
+      // Update unit abbreviations
+      unitAbbrs.forEach(el => el.textContent = uAbbr);
+
+      // Primary fields
+      if (resBmr) resBmr.textContent = Math.round(primaryBmr * mult).toLocaleString();
+      if (resTdee) resTdee.textContent = Math.round(primaryTdee * mult).toLocaleString();
+
+      // Formula breakdown
+      if (fMifflinBmr) fMifflinBmr.textContent = Math.round(bmrMifflin * mult).toLocaleString();
+      if (fMifflinTdee) fMifflinTdee.textContent = Math.round(tdeeMifflin * mult).toLocaleString();
+      if (fHarrisBmr) fHarrisBmr.textContent = Math.round(bmrHarris * mult).toLocaleString();
+      if (fHarrisTdee) fHarrisTdee.textContent = Math.round(tdeeHarris * mult).toLocaleString();
+      if (fKatchBmr) fKatchBmr.textContent = Math.round(bmrKatch * mult).toLocaleString();
+      if (fKatchTdee) fKatchTdee.textContent = Math.round(tdeeKatch * mult).toLocaleString();
+
+      // Activity targets (based on Mifflin BMR)
+      if (actBmr) actBmr.textContent = Math.round(primaryBmr * 1.0 * mult).toLocaleString();
+      if (actSedentary) actSedentary.textContent = Math.round(primaryBmr * 1.2 * mult).toLocaleString();
+      if (actLight) actLight.textContent = Math.round(primaryBmr * 1.375 * mult).toLocaleString();
+      if (actModerate) actModerate.textContent = Math.round(primaryBmr * 1.465 * mult).toLocaleString();
+      if (actActive) actActive.textContent = Math.round(primaryBmr * 1.55 * mult).toLocaleString();
+      if (actVeryActive) actVeryActive.textContent = Math.round(primaryBmr * 1.725 * mult).toLocaleString();
+      if (actExtraActive) actExtraActive.textContent = Math.round(primaryBmr * 1.9 * mult).toLocaleString();
+
+      // Toggle views
+      resultsEmpty?.classList.add('hidden');
+      resultsActive?.classList.remove('hidden');
+    });
+
+    btnClear?.addEventListener('click', () => {
+      inputAge.value = "25";
+      inputHeightFt.value = "5";
+      inputHeightIn.value = "10";
+      inputHeightCm.value = "178";
+      inputWeight.value = isUsUnits ? "165" : "65";
+      inputActivity.value = "1.465";
+      inputBodyFat.value = "20";
+
+      const radCalories = document.querySelector('input[name="mc-results-unit"][value="calories"]');
+      if (radCalories) radCalories.checked = true;
+
+      resultsActive?.classList.add('hidden');
+      resultsEmpty?.classList.remove('hidden');
+    });
+  });
+</script>

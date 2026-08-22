@@ -1,0 +1,680 @@
+---
+// WeightLossCalc.astro
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full max-w-6xl mx-auto">
+  <!-- Inputs Card -->
+  <div class="lg:col-span-5 bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 flex flex-col justify-between">
+    <div>
+      <!-- Unit Selection (US vs Metric) -->
+      <div class="flex bg-canvas-soft-2 p-1 rounded-sm border border-hairline mb-6">
+        <button
+          type="button"
+          id="wl-toggle-us"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 bg-canvas text-ink shadow-level-2"
+        >
+          US Units
+        </button>
+        <button
+          type="button"
+          id="wl-toggle-metric"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 text-body hover:text-ink"
+        >
+          Metric Units
+        </button>
+      </div>
+
+      <!-- Main Input Form -->
+      <form id="wl-calorie-form" class="space-y-5" onsubmit="return false;">
+        <!-- Age -->
+        <div>
+          <label for="wl-input-age" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Age (years)
+          </label>
+          <input
+            type="number"
+            id="wl-input-age"
+            min="15"
+            max="80"
+            value="25"
+            required
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+          />
+          <span class="text-xs text-mute mt-1 block">Ages 15 - 80</span>
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Gender
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="wl-gender" value="male" checked class="sr-only" id="wl-gender-male" />
+              <span class="text-sm font-medium text-ink">Male</span>
+            </label>
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="wl-gender" value="female" class="sr-only" id="wl-gender-female" />
+              <span class="text-sm font-medium text-ink">Female</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Height (US: feet/inches vs Metric: cm) -->
+        <div id="wl-height-us-container" class="space-y-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative">
+              <input
+                type="number"
+                id="wl-input-height-ft"
+                min="3"
+                max="8"
+                value="5"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">ft</span>
+            </div>
+            <div class="relative">
+              <input
+                type="number"
+                id="wl-input-height-in"
+                min="0"
+                max="11"
+                value="10"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">in</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="wl-height-metric-container" class="hidden space-y-2">
+          <label for="wl-input-height-cm" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height (cm)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="wl-input-height-cm"
+              min="100"
+              max="250"
+              value="178"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">cm</span>
+          </div>
+        </div>
+
+        <!-- Weight -->
+        <div>
+          <label for="wl-input-weight" id="wl-label-weight" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Current Weight (pounds)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="wl-input-weight"
+              min="30"
+              max="600"
+              value="165"
+              required
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span id="wl-badge-weight" class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">lbs</span>
+          </div>
+        </div>
+
+        <!-- Activity Level -->
+        <div>
+          <label for="wl-input-activity" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Activity Level
+          </label>
+          <select
+            id="wl-input-activity"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10 cursor-pointer"
+          >
+            <option value="1">Basal Metabolic Rate (BMR)</option>
+            <option value="1.2">Sedentary: little or no exercise</option>
+            <option value="1.375">Light: exercise 1-3 times/week</option>
+            <option value="1.465" selected>Moderate: exercise 4-5 times/week</option>
+            <option value="1.55">Active: exercise or sports 6-7 times/week</option>
+            <option value="1.725">Very Active: intense exercise daily</option>
+            <option value="1.9">Extra Active: highly intense exercise daily, or physical job</option>
+          </select>
+        </div>
+
+        <!-- Target Weight Loss (Pounds/kg to lose) -->
+        <div>
+          <label for="wl-input-target" id="wl-label-target" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            How much weight do you want to lose?
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="wl-input-target"
+              min="1"
+              max="150"
+              value="10"
+              required
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span id="wl-badge-target" class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">lbs</span>
+          </div>
+        </div>
+
+        <!-- Advanced Settings Drawer Toggle -->
+        <div>
+          <button
+            type="button"
+            id="wl-toggle-settings"
+            class="text-xs font-medium text-link hover:text-link-deep flex items-center gap-1 font-caption-mono py-1 focus:outline-none"
+          >
+            <span id="wl-settings-icon">+</span> Advanced Settings
+          </button>
+
+          <!-- Drawer Content -->
+          <div id="wl-settings-drawer" class="hidden mt-3 p-4 bg-canvas-soft border border-hairline rounded-sm space-y-4 transition-all duration-200">
+            <!-- Results Unit -->
+            <div>
+              <span class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Results Unit
+              </span>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="wl-results-unit" value="calories" checked class="accent-ink" />
+                  Calories (kcal)
+                </label>
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="wl-results-unit" value="kilojoules" class="accent-ink" />
+                  Kilojoules (kJ)
+                </label>
+              </div>
+            </div>
+
+            <!-- Formula -->
+            <div>
+              <label for="wl-input-formula" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                BMR Estimation Formula
+              </label>
+              <select
+                id="wl-input-formula"
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8 cursor-pointer"
+              >
+                <option value="mifflin">Mifflin-St Jeor (Recommended)</option>
+                <option value="harris">Revised Harris-Benedict</option>
+                <option value="katch">Katch-McArdle (Body Fat Required)</option>
+              </select>
+            </div>
+
+            <!-- Body Fat % (Shown only for Katch-McArdle) -->
+            <div id="wl-body-fat-container" class="hidden">
+              <label for="wl-input-body-fat" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Body Fat Percentage (%)
+              </label>
+              <div class="relative">
+                <input
+                  type="number"
+                  id="wl-input-body-fat"
+                  min="3"
+                  max="60"
+                  value="20"
+                  class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8"
+                />
+                <span class="absolute right-2 top-1.5 text-xs text-mute font-caption-mono pointer-events-none">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Submit buttons -->
+    <div class="mt-8 flex gap-4">
+      <button
+        type="button"
+        id="wl-btn-calculate"
+        class="flex-1 bg-primary text-on-primary font-medium text-sm py-3 rounded-pill hover:bg-ink hover:opacity-90 active:scale-[0.98] transition-all duration-150 cursor-pointer shadow-level-2"
+      >
+        Calculate Deficit Plan
+      </button>
+      <button
+        type="button"
+        id="wl-btn-clear"
+        class="bg-canvas border border-hairline text-ink font-medium text-sm px-6 py-3 rounded-pill hover:bg-canvas-soft hover:border-hairline-strong transition-all duration-150 cursor-pointer"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Dashboard -->
+  <div class="lg:col-span-7 flex flex-col">
+    <!-- Empty State -->
+    <div id="wl-results-empty" class="flex-1 bg-canvas border border-hairline shadow-level-2 rounded-lg p-10 text-center flex flex-col justify-center items-center h-full min-h-[420px] transition-all duration-300">
+      <div class="w-12 h-12 bg-canvas-soft border border-hairline rounded-full flex items-center justify-center mb-4 text-mute">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-ink mb-2">Weight Loss Strategy</h3>
+      <p class="text-sm text-body max-w-sm">
+        Enter your physical parameters and weight loss targets, then click "Calculate Deficit Plan" to find your maintenance calories, target intake, and a timeline estimation.
+      </p>
+    </div>
+
+    <!-- Active Dashboard -->
+    <div id="wl-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300">
+      <!-- Main Metric Comparison Card -->
+      <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-48 h-48 bg-gradient-to-br from-error-soft via-violet-soft to-highlight-pink opacity-25 blur-3xl pointer-events-none rounded-full"></div>
+        
+        <span class="text-xs font-semibold uppercase tracking-wider text-mute font-caption-mono block mb-1">
+          Caloric Maintenance vs Deficit
+        </span>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          <!-- Maintenance -->
+          <div class="border-r border-hairline pr-4">
+            <span class="text-xs text-body font-caption-mono uppercase block mb-1">Maintenance (TDEE)</span>
+            <h2 id="wl-res-maintenance" class="text-3xl font-bold tracking-tight text-ink font-display-lg leading-none">0</h2>
+            <span class="text-xs text-mute font-caption-mono wl-unit-lbl">kcal/day</span>
+            <p class="text-xs text-body mt-2 leading-relaxed">
+              Energy intake required to remain exactly at your current weight.
+            </p>
+          </div>
+
+          <!-- Weight Loss target -->
+          <div class="pl-0 md:pl-4">
+            <span class="text-xs text-error-deep font-caption-mono uppercase block mb-1">Weight Loss Target</span>
+            <h2 id="wl-res-target-cal" class="text-3xl font-bold tracking-tight text-error-deep font-display-lg leading-none">0</h2>
+            <span class="text-xs text-mute font-caption-mono wl-unit-lbl">kcal/day</span>
+            <p class="text-xs text-body mt-2 leading-relaxed">
+              Recommended daily intake for sustainable fat loss (default: -1.0 lb/wk).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specialized Caloric Plans and Deficits -->
+      <div class="bg-canvas border border-hairline shadow-level-2 rounded-lg p-5 space-y-4">
+        <div class="flex items-center gap-2 border-b border-hairline pb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono font-bold">
+            Deficit Tiers & Goal Timelines
+          </h3>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Table Row header -->
+          <div class="grid grid-cols-12 gap-2 text-[10px] font-semibold uppercase tracking-wider text-body font-caption-mono pb-1 border-b border-hairline">
+            <div class="col-span-5">Plan Rate</div>
+            <div class="col-span-3 text-right">Daily Budget</div>
+            <div class="col-span-4 text-right">Est. Time to Goal</div>
+          </div>
+
+          <!-- Mild Deficit -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-5">
+              <span class="font-bold text-ink block">Mild Weight Loss</span>
+              <span class="text-xs text-mute font-caption-mono">0.5 lbs (0.25 kg) / week</span>
+            </div>
+            <div class="col-span-3 text-right">
+              <span id="wl-val-mild" class="font-semibold text-ink">0</span>
+              <span class="text-[10px] text-mute block wl-unit-abbr">kcal</span>
+            </div>
+            <div class="col-span-4 text-right font-caption-mono">
+              <span id="wl-time-mild" class="font-bold text-ink">0</span> weeks
+            </div>
+          </div>
+
+          <!-- Normal Deficit -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all bg-canvas-soft">
+            <div class="col-span-5">
+              <span class="font-bold text-ink block">Weight Loss</span>
+              <span class="text-xs text-mute font-caption-mono">1.0 lbs (0.5 kg) / week</span>
+            </div>
+            <div class="col-span-3 text-right">
+              <span id="wl-val-normal" class="font-semibold text-ink">0</span>
+              <span class="text-[10px] text-mute block wl-unit-abbr">kcal</span>
+            </div>
+            <div class="col-span-4 text-right font-caption-mono">
+              <span id="wl-time-normal" class="font-bold text-ink">0</span> weeks
+            </div>
+          </div>
+
+          <!-- Extreme Deficit -->
+          <div class="grid grid-cols-12 gap-2 items-center text-sm py-1 border-b border-hairline last:border-0 hover:bg-canvas-soft-2 rounded-sm p-1.5 transition-all">
+            <div class="col-span-5">
+              <span class="font-bold text-ink block">Extreme Weight Loss</span>
+              <span class="text-xs text-mute font-caption-mono">2.0 lbs (1.0 kg) / week</span>
+            </div>
+            <div class="col-span-3 text-right">
+              <span id="wl-val-extreme" class="font-semibold text-ink text-error-deep">0</span>
+              <span class="text-[10px] text-mute block wl-unit-abbr">kcal</span>
+            </div>
+            <div class="col-span-4 text-right font-caption-mono">
+              <span id="wl-time-extreme" class="font-bold text-ink">0</span> weeks
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Warning Indicator -->
+      <div id="wl-safety-warning" class="hidden bg-error-soft text-error-deep border border-error/20 p-4 rounded-sm flex items-start gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mt-0.5 flex-shrink-0">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+        <div class="text-xs leading-normal">
+          <span class="font-bold">Cautionary Deficit Warning:</span> One or more daily targets drop below clinical safety recommendations (<span id="wl-safety-min">0</span> <span class="wl-unit-abbr">kcal</span>/day). Extreme low calorie intakes can decelerate thyroid activity, induce critical lean tissue loss, and lead to nutritional deficiencies. Please consult a registered dietitian before executing high-deficit programs.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Inputs
+    const toggleUs = document.getElementById('wl-toggle-us');
+    const toggleMetric = document.getElementById('wl-toggle-metric');
+    const heightUsContainer = document.getElementById('wl-height-us-container');
+    const heightMetricContainer = document.getElementById('wl-height-metric-container');
+    const inputAge = document.getElementById('wl-input-age');
+    const inputHeightFt = document.getElementById('wl-input-height-ft');
+    const inputHeightIn = document.getElementById('wl-input-height-in');
+    const inputHeightCm = document.getElementById('wl-input-height-cm');
+    const inputWeight = document.getElementById('wl-input-weight');
+    const labelWeight = document.getElementById('wl-label-weight');
+    const badgeWeight = document.getElementById('wl-badge-weight');
+    const inputActivity = document.getElementById('wl-input-activity');
+    const inputTarget = document.getElementById('wl-input-target');
+    const labelTarget = document.getElementById('wl-label-target');
+    const badgeTarget = document.getElementById('wl-badge-target');
+
+    // Advanced drawer settings
+    const toggleSettings = document.getElementById('wl-toggle-settings');
+    const settingsDrawer = document.getElementById('wl-settings-drawer');
+    const settingsIcon = document.getElementById('wl-settings-icon');
+    const inputFormula = document.getElementById('wl-input-formula');
+    const bodyFatContainer = document.getElementById('wl-body-fat-container');
+    const inputBodyFat = document.getElementById('wl-input-body-fat');
+
+    // View toggling
+    const resultsEmpty = document.getElementById('wl-results-empty');
+    const resultsActive = document.getElementById('wl-results-active');
+
+    // Primary values outputs
+    const resMaintenance = document.getElementById('wl-res-maintenance');
+    const resTargetCal = document.getElementById('wl-res-target-cal');
+    const unitLabels = document.querySelectorAll('.wl-unit-lbl');
+    const unitAbbrs = document.querySelectorAll('.wl-unit-abbr');
+
+    // Table rows
+    const valMild = document.getElementById('wl-val-mild');
+    const valNormal = document.getElementById('wl-val-normal');
+    const valExtreme = document.getElementById('wl-val-extreme');
+    const timeMild = document.getElementById('wl-time-mild');
+    const timeNormal = document.getElementById('wl-time-normal');
+    const timeExtreme = document.getElementById('wl-time-extreme');
+
+    // Safety warning indicators
+    const safetyWarning = document.getElementById('wl-safety-warning');
+    const safetyMin = document.getElementById('wl-safety-min');
+
+    // Buttons
+    const btnCalculate = document.getElementById('wl-btn-calculate');
+    const btnClear = document.getElementById('wl-btn-clear');
+
+    let isUsUnits = true;
+    const KJ_CONVERSION = 4.1868;
+
+    // Unit toggle logic
+    toggleUs?.addEventListener('click', () => {
+      if (isUsUnits) return;
+      isUsUnits = true;
+      toggleUs.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleUs.classList.remove('text-body', 'hover:text-ink');
+      toggleMetric?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleMetric?.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer?.classList.remove('hidden');
+      heightMetricContainer?.classList.add('hidden');
+      if (labelWeight) labelWeight.textContent = "Current Weight (pounds)";
+      if (badgeWeight) badgeWeight.textContent = "lbs";
+      if (labelTarget) labelTarget.textContent = "How much weight do you want to lose?";
+      if (badgeTarget) badgeTarget.textContent = "lbs";
+
+      // Convert height and weight values
+      const currentCm = parseFloat(inputHeightCm.value);
+      if (!isNaN(currentCm) && currentCm > 0) {
+        const totalInches = currentCm / 2.54;
+        inputHeightFt.value = Math.floor(totalInches / 12);
+        inputHeightIn.value = Math.round(totalInches % 12) === 12 ? 11 : Math.round(totalInches % 12);
+      }
+
+      const currentKg = parseFloat(inputWeight.value);
+      if (!isNaN(currentKg) && currentKg > 0) {
+        inputWeight.value = Math.round(currentKg * 2.20462);
+      }
+
+      const currentTargetKg = parseFloat(inputTarget.value);
+      if (!isNaN(currentTargetKg) && currentTargetKg > 0) {
+        inputTarget.value = Math.round(currentTargetKg * 2.20462);
+      }
+    });
+
+    toggleMetric?.addEventListener('click', () => {
+      if (!isUsUnits) return;
+      isUsUnits = false;
+      toggleMetric.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleMetric.classList.remove('text-body', 'hover:text-ink');
+      toggleUs?.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      toggleUs?.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer?.classList.add('hidden');
+      heightMetricContainer?.classList.remove('hidden');
+      if (labelWeight) labelWeight.textContent = "Current Weight (kg)";
+      if (badgeWeight) badgeWeight.textContent = "kg";
+      if (labelTarget) labelTarget.textContent = "How much weight do you want to lose?";
+      if (badgeTarget) badgeTarget.textContent = "kg";
+
+      // Convert height and weight values
+      const ft = parseFloat(inputHeightFt.value) || 0;
+      const inch = parseFloat(inputHeightIn.value) || 0;
+      const totalInches = (ft * 12) + inch;
+      if (totalInches > 0) {
+        inputHeightCm.value = Math.round(totalInches * 2.54);
+      }
+
+      const currentLbs = parseFloat(inputWeight.value);
+      if (!isNaN(currentLbs) && currentLbs > 0) {
+        inputWeight.value = Math.round(currentLbs / 2.20462);
+      }
+
+      const currentTargetLbs = parseFloat(inputTarget.value);
+      if (!isNaN(currentTargetLbs) && currentTargetLbs > 0) {
+        inputTarget.value = Math.round(currentTargetLbs / 2.20462);
+      }
+    });
+
+    toggleSettings?.addEventListener('click', () => {
+      const isHidden = settingsDrawer.classList.contains('hidden');
+      if (isHidden) {
+        settingsDrawer.classList.remove('hidden');
+        settingsIcon.textContent = '-';
+      } else {
+        settingsDrawer.classList.add('hidden');
+        settingsIcon.textContent = '+';
+      }
+    });
+
+    inputFormula?.addEventListener('change', () => {
+      if (inputFormula.value === 'katch') {
+        bodyFatContainer?.classList.remove('hidden');
+      } else {
+        bodyFatContainer?.classList.add('hidden');
+      }
+    });
+
+    btnCalculate?.addEventListener('click', () => {
+      // 1. Gather variables and validate
+      const age = parseInt(inputAge.value);
+      if (isNaN(age) || age < 15 || age > 80) {
+        alert("Please enter a valid age between 15 and 80.");
+        inputAge.focus();
+        return;
+      }
+
+      const genderElement = document.querySelector('input[name="wl-gender"]:checked');
+      const gender = genderElement ? genderElement.value : 'male';
+
+      let heightCm = 0;
+      if (isUsUnits) {
+        const ft = parseFloat(inputHeightFt.value);
+        const inch = parseFloat(inputHeightIn.value);
+        if (isNaN(ft) || ft < 3 || ft > 8 || isNaN(inch) || inch < 0 || inch >= 12) {
+          alert("Please enter a valid height in feet (3 - 8) and inches (0 - 11).");
+          inputHeightFt.focus();
+          return;
+        }
+        heightCm = ((ft * 12) + inch) * 2.54;
+      } else {
+        heightCm = parseFloat(inputHeightCm.value);
+        if (isNaN(heightCm) || heightCm < 100 || heightCm > 250) {
+          alert("Please enter a valid height in cm (100 - 250).");
+          inputHeightCm.focus();
+          return;
+        }
+      }
+
+      let currentWeightKg = 0;
+      const weightVal = parseFloat(inputWeight.value);
+      if (isNaN(weightVal) || weightVal < 30 || weightVal > 600) {
+        alert("Please enter a valid current weight (30 - 600).");
+        inputWeight.focus();
+        return;
+      }
+      if (isUsUnits) {
+        currentWeightKg = weightVal / 2.20462;
+      } else {
+        currentWeightKg = weightVal;
+      }
+
+      let targetLossLbs = 0;
+      const lossVal = parseFloat(inputTarget.value);
+      if (isNaN(lossVal) || lossVal <= 0 || lossVal > 150) {
+        alert("Please enter a valid target weight loss (1 - 150).");
+        inputTarget.focus();
+        return;
+      }
+      if (isUsUnits) {
+        targetLossLbs = lossVal;
+      } else {
+        targetLossLbs = lossVal * 2.20462;
+      }
+
+      const activityFactor = parseFloat(inputActivity.value);
+      const formula = inputFormula.value;
+      const resultsUnitElement = document.querySelector('input[name="wl-results-unit"]:checked');
+      const resultsUnit = resultsUnitElement ? resultsUnitElement.value : 'calories';
+
+      // 2. Compute BMR
+      let bmr = 0;
+      if (formula === 'mifflin') {
+        if (gender === 'male') {
+          bmr = (10 * currentWeightKg) + (6.25 * heightCm) - (5 * age) + 5;
+        } else {
+          bmr = (10 * currentWeightKg) + (6.25 * heightCm) - (5 * age) - 161;
+        }
+      } else if (formula === 'harris') {
+        if (gender === 'male') {
+          bmr = 88.362 + (13.397 * currentWeightKg) + (4.799 * heightCm) - (5.677 * age);
+        } else {
+          bmr = 447.593 + (9.247 * currentWeightKg) + (3.098 * heightCm) - (4.330 * age);
+        }
+      } else if (formula === 'katch') {
+        const bodyFat = parseFloat(inputBodyFat.value);
+        if (isNaN(bodyFat) || bodyFat < 3 || bodyFat > 60) {
+          alert("Please enter a valid body fat percentage between 3% and 60%.");
+          inputBodyFat.focus();
+          return;
+        }
+        const leanMass = currentWeightKg * (1 - (bodyFat / 100));
+        bmr = 370 + (21.6 * leanMass);
+      }
+
+      // 3. Compute TDEE (Maintenance)
+      const maintenance = bmr * activityFactor;
+      
+      // Deficits targets (TDEE - deficit)
+      // Standard target is TDEE - 500 kcal (1.0 lb/wk weight loss)
+      const mildCal = Math.max(0, maintenance - 250);
+      const normalCal = Math.max(0, maintenance - 500);
+      const extremeCal = Math.max(0, maintenance - 1000);
+
+      // Conversions (kcal to kJ)
+      const mult = resultsUnit === 'kilojoules' ? KJ_CONVERSION : 1;
+      const uLbl = resultsUnit === 'kilojoules' ? 'kJ/day' : 'kcal/day';
+      const uAbbr = resultsUnit === 'kilojoules' ? 'kJ' : 'kcal';
+
+      // Update unit labels
+      unitLabels.forEach(el => el.textContent = uLbl);
+      unitAbbrs.forEach(el => el.textContent = uAbbr);
+
+      // Main metrics
+      if (resMaintenance) resMaintenance.textContent = Math.round(maintenance * mult).toLocaleString();
+      if (resTargetCal) resTargetCal.textContent = Math.round(normalCal * mult).toLocaleString();
+
+      // Plan calories outputs
+      if (valMild) valMild.textContent = Math.round(mildCal * mult).toLocaleString();
+      if (valNormal) valNormal.textContent = Math.round(normalCal * mult).toLocaleString();
+      if (valExtreme) valExtreme.textContent = Math.round(extremeCal * mult).toLocaleString();
+
+      // Estimated weeks to goal
+      // targetLossLbs is the lbs to lose.
+      // Mild: 0.5 lbs/week, Normal: 1.0 lbs/week, Extreme: 2.0 lbs/week
+      if (timeMild) timeMild.textContent = (targetLossLbs / 0.5).toFixed(1);
+      if (timeNormal) timeNormal.textContent = (targetLossLbs / 1.0).toFixed(1);
+      if (timeExtreme) timeExtreme.textContent = (targetLossLbs / 2.0).toFixed(1);
+
+      // Clinical warning (Min calories: 1200 for males, 1000 for females in kcal)
+      const minHealthyCal = gender === 'male' ? 1200 : 1000;
+      if (safetyMin) safetyMin.textContent = Math.round(minHealthyCal * mult).toLocaleString();
+
+      const hasSafetyRisk = (mildCal < minHealthyCal || normalCal < minHealthyCal || extremeCal < minHealthyCal);
+      if (hasSafetyRisk) {
+        safetyWarning?.classList.remove('hidden');
+      } else {
+        safetyWarning?.classList.add('hidden');
+      }
+
+      // Toggle panels
+      resultsEmpty?.classList.add('hidden');
+      resultsActive?.classList.remove('hidden');
+    });
+
+    btnClear?.addEventListener('click', () => {
+      inputAge.value = "25";
+      inputHeightFt.value = "5";
+      inputHeightIn.value = "10";
+      inputHeightCm.value = "178";
+      inputWeight.value = isUsUnits ? "165" : "65";
+      inputActivity.value = "1.465";
+      inputTarget.value = "10";
+      inputFormula.value = "mifflin";
+      bodyFatContainer?.classList.add('hidden');
+      inputBodyFat.value = "20";
+      
+      const radCalories = document.querySelector('input[name="wl-results-unit"][value="calories"]');
+      if (radCalories) radCalories.checked = true;
+
+      resultsActive?.classList.add('hidden');
+      resultsEmpty?.classList.remove('hidden');
+    });
+  });
+</script>

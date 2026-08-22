@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MaintenanceCalc from '../components/MaintenanceCalc.astro';
+---
+
+<Layout title="Maintenance Calorie Calculator - BMR & TDEE Comparison" description="Analyze your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE) across Mifflin-St Jeor, Harris-Benedict, and Katch-McArdle calculations.">
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative w-full overflow-hidden bg-canvas py-12 md:py-16 border-b border-hairline">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_30%_20%,rgba(80,227,194,0.05)_0px,transparent_50%),radial-gradient(at_70%_20%,rgba(7,97,209,0.04)_0px,transparent_50%)] pointer-events-none"></div>
+
+    <div class="w-full max-w-4xl mx-auto px-6 text-center relative z-10 space-y-4">
+      <span class="inline-flex items-center gap-1.5 font-caption-mono text-xs text-link-deep bg-link-bg-soft text-link border border-link/10 px-3 py-1 rounded-full font-semibold">
+        TDEE & BMR Comparison
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg max-w-xl mx-auto leading-none">
+        Maintenance Calorie Calculator.
+      </h1>
+      <p class="text-sm md:text-base text-body max-w-lg mx-auto leading-relaxed">
+        Understand your body's baseline energy expenditure. Compare clinical metabolic formulas side-by-side and examine calories required across different physical activity multipliers.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator content section -->
+  <section class="w-full py-16 bg-canvas-soft">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <MaintenanceCalc />
+    </div>
+  </section>
+
+  <!-- Educational content -->
+  <section class="w-full py-12 md:py-16 bg-canvas border-t border-hairline">
+    <div class="w-full max-w-3xl mx-auto px-6 space-y-6 text-sm text-body leading-relaxed">
+      <h3 class="text-lg font-bold text-ink font-display-sm">BMR vs. TDEE: What's the Difference?</h3>
+      <p>
+        To manage your weight successfully, it is important to distinguish between the two primary baseline metabolic measurements:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+        <div class="bg-canvas-soft-2 border border-hairline rounded-sm p-4 space-y-2">
+          <h4 class="text-sm font-semibold text-ink font-caption-mono uppercase">Basal Metabolic Rate (BMR)</h4>
+          <p class="text-xs text-body leading-normal">
+            BMR represents the minimal number of calories your body needs to maintain basic vegetative functions (respiration, brain activity, cellular repair, circulation) while at absolute rest, in a thermo-neutral state, with an empty digestive system. It does not account for any physical movement or digestion.
+          </p>
+        </div>
+        
+        <div class="bg-canvas-soft-2 border border-hairline rounded-sm p-4 space-y-2">
+          <h4 class="text-sm font-semibold text-primary font-caption-mono uppercase">Total Daily Energy Expenditure (TDEE)</h4>
+          <p class="text-xs text-body leading-normal">
+            TDEE represents the actual number of calories your body burns in a full day. It includes your BMR, physical activity, and the thermic effect of food (digestion). TDEE is estimated by multiplying your BMR by an activity factor ranging from 1.2 (sedentary) to 1.9 (extra active).
+          </p>
+        </div>
+      </div>
+      <p class="pt-2">
+        By matching your daily food intake to your TDEE (maintenance calories), you establish a state of caloric equilibrium where weight remains constant. Comparing different formulas (like Mifflin, which uses height/weight, vs Katch-McArdle, which uses lean body mass) allows you to establish a highly personalized, accurate metabolic target.
+      </p>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

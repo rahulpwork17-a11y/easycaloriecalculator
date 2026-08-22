@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import RecipeCalc from '../components/RecipeCalc.astro';
+---
+
+<Layout title="Recipe Calorie Calculator - Meal Calorie Density Calculator" description="Compute total recipe calories, calories per individual serving, and analyze meal energy density parameters for healthy nutrition planning.">
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative w-full overflow-hidden bg-canvas py-12 md:py-16 border-b border-hairline">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_30%_20%,rgba(80,227,194,0.04)_0px,transparent_50%),radial-gradient(at_70%_20%,rgba(249,203,40,0.04)_0px,transparent_50%)] pointer-events-none"></div>
+
+    <div class="w-full max-w-4xl mx-auto px-6 text-center relative z-10 space-y-4">
+      <span class="inline-flex items-center gap-1.5 font-caption-mono text-xs text-warning-deep bg-warning-soft/30 border border-warning/15 px-3 py-1 rounded-full font-semibold">
+        Meal Density & Servings
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg max-w-xl mx-auto leading-none">
+        Recipe Calorie Calculator.
+      </h1>
+      <p class="text-sm md:text-base text-body max-w-lg mx-auto leading-relaxed">
+        Calculate calories for home-cooked meals. Dynamically add multiple ingredients, select portion servings, and evaluate caloric density ratios to stay aligned with your macros.
+      </p>
+    </div>
+  </section>
+
+  <!-- Calculator content section -->
+  <section class="w-full py-16 bg-canvas-soft">
+    <div class="w-full max-w-6xl mx-auto px-6">
+      <RecipeCalc />
+    </div>
+  </section>
+
+  <!-- Educational content -->
+  <section class="w-full py-12 md:py-16 bg-canvas border-t border-hairline">
+    <div class="w-full max-w-3xl mx-auto px-6 space-y-6 text-sm text-body leading-relaxed">
+      <h3 class="text-lg font-bold text-ink font-display-sm">The Science of Calorie Density</h3>
+      <p>
+        <strong>Calorie Density</strong> (or energy density) is the number of calories in a specific weight of food, represented here as kcal per gram (kcal/g).
+      </p>
+      <p>
+        Choosing foods based on caloric density is a highly effective clinical weight management tool. The volume of food you consume triggers receptors in your stomach that signal satiety (fullness) to the brain. By selecting recipes with lower energy densities, you can eat larger, more satisfying volumes of food while staying in a caloric deficit.
+      </p>
+      <ul class="list-disc pl-5 space-y-2 mt-2">
+        <li><strong>Low Energy Density (&le;0.6 kcal/g):</strong> Characterized by high moisture or fiber volumes. These include fresh vegetables, fruit salads, clear soups, and cooked oatmeal. You can consume these in abundant portions.</li>
+        <li><strong>Moderate Energy Density (0.6 - 1.5 kcal/g):</strong> Balanced food items including whole grains, beans, lean meats, poultry, and potatoes. These form the baseline of most nutritious meals.</li>
+        <li><strong>High Energy Density (&ge;1.5 kcal/g):</strong> Foods that pack a large caloric punch in a small mass. These include oils, butter, salad dressings, nuts, cheese, and cookies. Portions should be carefully metered, as small excess amounts can quickly sabotage your caloric budget.</li>
+      </ul>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

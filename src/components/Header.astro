@@ -1,0 +1,149 @@
+---
+// Header.astro
+const pathname = Astro.url.pathname;
+const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
+---
+
+<header class="sticky top-0 z-50 w-full h-[64px] bg-canvas/80 backdrop-blur-md border-b border-hairline flex items-center">
+  <div class="w-full max-w-6xl mx-auto px-6 flex justify-between items-center">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-primary">
+        <path fill-rule="evenodd" d="M12.969 18.943c-2.172.067-4.449-.106-6.17-1.127a5.016 5.016 0 0 1-2.502-4.329c0-1.905.77-3.921 2.224-5.337a.75.75 0 0 1 1.092.012c.22.253.476.578.709.837.115.127.228.252.337.362a.75.75 0 0 1 .116.899 3.52 3.52 0 0 0-.432 1.549c.074.808.438 1.336 1.006 1.702 1.411.91 3.56.179 4.234-1.242a.75.75 0 0 1 1.15-.356c.208.156.585.467.9.782.154.154.306.314.456.462a.75.75 0 0 1 .073 1.011 8.311 8.311 0 0 1-3.138 3.518c-.866.527-1.782.748-2.693.818Z" clip-rule="evenodd" />
+        <path d="M10.422 2.034a.75.75 0 0 1 .655.45c.018.037.222.45.605.99.326.46.75 1.04 1.168 1.57a14.237 14.237 0 0 1 1.704 2.658c.773 1.561.986 2.923.646 3.901a.75.75 0 0 1-1.18.358c-.12-.092-.302-.252-.499-.447a15.647 15.647 0 0 1-1.378-1.584c-.262-.354-.512-.73-.728-1.08a9.199 9.199 0 0 1-.528-1.017.75.75 0 0 1 .08-.799 5.907 5.907 0 0 0 .741-2.822c0-.361-.074-.771-.162-1.177a5.547 5.547 0 0 0-.156-.569.75.75 0 0 1 .232-.782Z" />
+      </svg>
+      <span class="text-sm font-semibold tracking-tight font-display-sm text-ink select-none">
+        easycaloriecalculator.com
+      </span>
+    </a>
+
+    <!-- Navigation Links -->
+    <nav class="hidden md:flex gap-1 items-center">
+      <a 
+        href="/daily-calculator" 
+        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+          cleanPath === "/daily-calculator" 
+            ? "bg-canvas-soft-2 text-ink font-semibold" 
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Daily Calorie
+      </a>
+      <a 
+        href="/weight-loss-calculator" 
+        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+          cleanPath === "/weight-loss-calculator" 
+            ? "bg-canvas-soft-2 text-ink font-semibold" 
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Weight Loss
+      </a>
+      <a 
+        href="/maintenance-calculator" 
+        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+          cleanPath === "/maintenance-calculator" 
+            ? "bg-canvas-soft-2 text-ink font-semibold" 
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Maintenance
+      </a>
+      <a 
+        href="/recipe-calculator" 
+        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+          cleanPath === "/recipe-calculator" 
+            ? "bg-canvas-soft-2 text-ink font-semibold" 
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Recipe Calorie
+      </a>
+    </nav>
+
+    <!-- Right CTAs -->
+    <div class="flex items-center gap-3">
+      <!-- Theme Toggle Button -->
+      <button
+        id="theme-toggle"
+        type="button"
+        class="w-8 h-8 flex items-center justify-center rounded-full border border-hairline hover:bg-canvas-soft-2 text-ink transition-all duration-150 cursor-pointer"
+        aria-label="Toggle theme"
+      >
+        <!-- Sun Icon (visible in dark mode) -->
+        <svg
+          id="theme-toggle-sun-icon"
+          class="hidden w-4.5 h-4.5 text-ink"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3v2.25m0 13.5V21M21 12h-2.25M5.25 12H3m14.25-6.364-1.591 1.591M6.364 17.636l-1.591 1.591m12.728 0-1.591-1.591M6.364 6.364 4.773 7.955M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z"
+          />
+        </svg>
+        <!-- Moon Icon (visible in light mode) -->
+        <svg
+          id="theme-toggle-moon-icon"
+          class="hidden w-4.5 h-4.5 text-ink"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+          />
+        </svg>
+      </button>
+
+      <span class="font-caption-mono text-[10px] bg-cyan-soft text-cyan-deep border border-cyan-deep/15 px-2 py-0.5 rounded-full font-semibold">
+        Web App v1.0
+      </span>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Handle theme toggles globally from this component
+  function setupThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('theme-toggle-sun-icon');
+    const moonIcon = document.getElementById('theme-toggle-moon-icon');
+
+    function updateToggleIcons() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        sunIcon?.classList.remove('hidden');
+        moonIcon?.classList.add('hidden');
+      } else {
+        sunIcon?.classList.add('hidden');
+        moonIcon?.classList.remove('hidden');
+      }
+    }
+
+    updateToggleIcons();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateToggleIcons();
+    });
+  }
+
+  // Set up immediately and on page transitions if SPA-like, or on load
+  setupThemeToggle();
+</script>
