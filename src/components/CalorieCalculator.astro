@@ -1,0 +1,852 @@
+---
+// CalorieCalculator.astro
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch w-full max-w-6xl mx-auto">
+  <!-- Inputs Card -->
+  <div class="lg:col-span-5 bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 flex flex-col justify-between">
+    <div>
+      <!-- Unit Selection (US vs Metric) -->
+      <div class="flex bg-canvas-soft-2 p-1 rounded-sm border border-hairline mb-6">
+        <button
+          type="button"
+          id="toggle-us"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 bg-canvas text-ink shadow-level-2"
+        >
+          US Units
+        </button>
+        <button
+          type="button"
+          id="toggle-metric"
+          class="flex-1 text-center py-2 text-sm font-medium rounded-sm transition-all duration-200 text-body hover:text-ink"
+        >
+          Metric Units
+        </button>
+      </div>
+
+      <!-- Main Input Form -->
+      <form id="calorie-form" class="space-y-5" onsubmit="return false;">
+        <!-- Age -->
+        <div>
+          <label for="input-age" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Age (years)
+          </label>
+          <input
+            type="number"
+            id="input-age"
+            min="15"
+            max="80"
+            value="25"
+            required
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+          />
+          <span class="text-xs text-mute mt-1 block">Ages 15 - 80</span>
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Gender
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="gender" value="male" checked class="sr-only" id="gender-male" />
+              <span class="text-sm font-medium text-ink">Male</span>
+            </label>
+            <label class="relative flex items-center justify-center border border-hairline rounded-sm p-3 cursor-pointer transition-all duration-200 hover:border-hairline-strong has-[:checked]:border-ink has-[:checked]:bg-canvas-soft-2">
+              <input type="radio" name="gender" value="female" class="sr-only" id="gender-female" />
+              <span class="text-sm font-medium text-ink">Female</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Height (US: feet/inches vs Metric: cm) -->
+        <div id="height-us-container" class="space-y-2">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="relative">
+              <input
+                type="number"
+                id="input-height-ft"
+                min="3"
+                max="8"
+                value="5"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">ft</span>
+            </div>
+            <div class="relative">
+              <input
+                type="number"
+                id="input-height-in"
+                min="0"
+                max="11"
+                value="10"
+                required
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              />
+              <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">in</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="height-metric-container" class="hidden space-y-2">
+          <label for="input-height-cm" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Height (cm)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="input-height-cm"
+              min="100"
+              max="250"
+              value="178"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">cm</span>
+          </div>
+        </div>
+
+        <!-- Weight -->
+        <div>
+          <label for="input-weight" id="label-weight" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Weight (pounds)
+          </label>
+          <div class="relative">
+            <input
+              type="number"
+              id="input-weight"
+              min="30"
+              max="600"
+              value="165"
+              required
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            />
+            <span id="badge-weight" class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">lbs</span>
+          </div>
+        </div>
+
+        <!-- Activity Level -->
+        <div>
+          <label for="input-activity" class="block text-xs font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+            Activity Level
+          </label>
+          <select
+            id="input-activity"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10 cursor-pointer"
+          >
+            <option value="1">Basal Metabolic Rate (BMR)</option>
+            <option value="1.2">Sedentary: little or no exercise</option>
+            <option value="1.375">Light: exercise 1-3 times/week</option>
+            <option value="1.465" selected>Moderate: exercise 4-5 times/week</option>
+            <option value="1.55">Active: exercise or sports 6-7 times/week</option>
+            <option value="1.725">Very Active: intense exercise daily</option>
+            <option value="1.9">Extra Active: highly intense exercise daily, or physical job</option>
+          </select>
+        </div>
+
+        <!-- Advanced Settings Drawer Toggle -->
+        <div>
+          <button
+            type="button"
+            id="toggle-settings"
+            class="text-xs font-medium text-link hover:text-link-deep flex items-center gap-1 font-caption-mono py-1 focus:outline-none"
+          >
+            <span id="settings-icon">+</span> Advanced Settings
+          </button>
+
+          <!-- Drawer Content -->
+          <div id="settings-drawer" class="hidden mt-3 p-4 bg-canvas-soft border border-hairline rounded-sm space-y-4 transition-all duration-200">
+            <!-- Results Unit -->
+            <div>
+              <span class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Results Unit
+              </span>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="results-unit" value="calories" checked class="accent-ink" />
+                  Calories (kcal)
+                </label>
+                <label class="flex items-center gap-2 text-sm text-ink cursor-pointer">
+                  <input type="radio" name="results-unit" value="kilojoules" class="accent-ink" />
+                  Kilojoules (kJ)
+                </label>
+              </div>
+            </div>
+
+            <!-- Formula -->
+            <div>
+              <label for="input-formula" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                BMR Estimation Formula
+              </label>
+              <select
+                id="input-formula"
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8 cursor-pointer"
+              >
+                <option value="mifflin">Mifflin-St Jeor (Recommended)</option>
+                <option value="harris">Revised Harris-Benedict</option>
+                <option value="katch">Katch-McArdle (Body Fat Required)</option>
+              </select>
+            </div>
+
+            <!-- Body Fat % (Shown only for Katch-McArdle) -->
+            <div id="body-fat-container" class="hidden">
+              <label for="input-body-fat" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+                Body Fat Percentage (%)
+              </label>
+              <div class="relative">
+                <input
+                  type="number"
+                  id="input-body-fat"
+                  min="3"
+                  max="60"
+                  value="20"
+                  class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8"
+                />
+                <span class="absolute right-2 top-1.5 text-xs text-mute font-caption-mono pointer-events-none">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Submit buttons -->
+    <div class="mt-8 flex gap-4">
+      <button
+        type="button"
+        id="btn-calculate"
+        class="flex-1 bg-primary text-on-primary font-medium text-sm py-3 rounded-pill hover:bg-ink hover:opacity-90 active:scale-[0.98] transition-all duration-150 cursor-pointer shadow-level-2"
+      >
+        Calculate Daily Needs
+      </button>
+      <button
+        type="button"
+        id="btn-clear"
+        class="bg-canvas border border-hairline text-ink font-medium text-sm px-6 py-3 rounded-pill hover:bg-canvas-soft hover:border-hairline-strong transition-all duration-150 cursor-pointer"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Dashboard -->
+  <div class="lg:col-span-7 flex flex-col">
+    <!-- Empty State -->
+    <div id="results-empty" class="flex-1 bg-canvas border border-hairline shadow-level-2 rounded-lg p-10 text-center flex flex-col justify-center items-center h-full min-h-[420px] transition-all duration-300">
+      <div class="w-12 h-12 bg-canvas-soft border border-hairline rounded-full flex items-center justify-center mb-4 text-mute">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-ink mb-2">Ready to Calculate</h3>
+      <p class="text-sm text-body max-w-sm">
+        Enter your age, gender, height, and weight, then click "Calculate Daily Needs" to view your daily calorie expenditure, weight loss/gain plans, and macro breakdowns.
+      </p>
+    </div>
+
+    <!-- Active Dashboard -->
+    <div id="results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300">
+      <!-- Main Metric Highlight Card -->
+      <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 relative overflow-hidden">
+        <!-- Backdrop mesh glow snippet -->
+        <div class="absolute -right-20 -top-20 w-48 h-48 bg-gradient-to-br from-cyan-soft via-violet-soft to-highlight-pink opacity-25 blur-3xl pointer-events-none rounded-full"></div>
+        
+        <span class="text-xs font-semibold uppercase tracking-wider text-mute font-caption-mono block mb-1">
+          Daily Energy Expenditure
+        </span>
+        <div class="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
+          <div>
+            <h2 id="result-calories" class="text-4xl md:text-5xl font-bold tracking-tight text-ink font-display-xl inline-block leading-none">
+              0
+            </h2>
+            <span id="result-unit-label" class="text-xl md:text-2xl font-semibold text-body ml-2 font-display-sm">
+              Calories/day
+            </span>
+          </div>
+          <div class="text-xs text-body font-caption-mono bg-canvas-soft-2 px-2.5 py-1 border border-hairline rounded-sm w-fit">
+            BMR: <span id="result-bmr">0</span> <span class="result-unit-text">kcal</span>
+          </div>
+        </div>
+        <p class="text-sm text-body mt-4 leading-relaxed max-w-xl">
+          Based on your details, your body requires approximately this energy input to maintain your current weight at your selected activity level.
+        </p>
+      </div>
+
+      <!-- Weight Goals Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Weight Loss Column -->
+        <div class="bg-canvas border border-hairline shadow-level-2 rounded-lg p-5 space-y-4">
+          <div class="flex items-center gap-2 border-b border-hairline pb-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono">
+              Weight Loss Plans
+            </h3>
+          </div>
+          <div class="space-y-3">
+            <!-- Mild Loss -->
+            <div class="flex justify-between items-center bg-canvas-soft-2 p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Mild Weight Loss</p>
+                <p class="text-xs text-mute font-caption-mono">0.5 lbs (0.25 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="loss-mild" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+            <!-- Weight Loss -->
+            <div class="flex justify-between items-center bg-canvas-soft p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Weight Loss</p>
+                <p class="text-xs text-mute font-caption-mono">1.0 lbs (0.5 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="loss-normal" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+            <!-- Extreme Loss -->
+            <div class="flex justify-between items-center bg-canvas-soft-2 p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Extreme Weight Loss</p>
+                <p class="text-xs text-mute font-caption-mono">2.0 lbs (1.0 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="loss-extreme" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight Gain Column -->
+        <div class="bg-canvas border border-hairline shadow-level-2 rounded-lg p-5 space-y-4">
+          <div class="flex items-center gap-2 border-b border-hairline pb-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-deep"></span>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono">
+              Weight Gain Plans
+            </h3>
+          </div>
+          <div class="space-y-3">
+            <!-- Mild Gain -->
+            <div class="flex justify-between items-center bg-canvas-soft-2 p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Mild Weight Gain</p>
+                <p class="text-xs text-mute font-caption-mono">0.5 lbs (0.25 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="gain-mild" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+            <!-- Weight Gain -->
+            <div class="flex justify-between items-center bg-canvas-soft p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Weight Gain</p>
+                <p class="text-xs text-mute font-caption-mono">1.0 lbs (0.5 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="gain-normal" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+            <!-- Extreme Gain -->
+            <div class="flex justify-between items-center bg-canvas-soft-2 p-3 border border-hairline rounded-sm hover:border-hairline-strong transition-all duration-150">
+              <div>
+                <p class="text-sm font-semibold text-ink">Extreme Weight Gain</p>
+                <p class="text-xs text-mute font-caption-mono">2.0 lbs (1.0 kg) / week</p>
+              </div>
+              <div class="text-right">
+                <span id="gain-extreme" class="text-base font-bold text-ink">0</span>
+                <span class="text-xs text-body block result-unit-abbr">kcal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Warning Indicator -->
+      <div id="safety-warning" class="hidden bg-error-soft text-error-deep border border-error/20 p-4 rounded-sm flex items-start gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mt-0.5 flex-shrink-0">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+        <div class="text-xs leading-normal">
+          <span class="font-bold">Cautionary Note:</span> One or more weight loss goals drop below the minimum recommended healthy daily calorie intake (<span id="safety-min">0</span> <span class="result-unit-text">kcal</span>). Eating fewer calories than this can trigger metabolic starvation, fatigue, and muscle degradation. Please seek clinical advice.
+        </div>
+      </div>
+
+      <!-- Macro-Nutrients Breakdown Generator -->
+      <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 space-y-6">
+        <div class="border-b border-hairline pb-3">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-ink font-caption-mono">
+            Macro-Nutrient Distributions
+          </h3>
+          <p class="text-xs text-body mt-1">
+            See your personalized protein, carbohydrate, and fat gram breakdowns.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Select Calorie Plan -->
+          <div>
+            <label for="macro-select-plan" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+              Select Calorie Plan
+            </label>
+            <select
+              id="macro-select-plan"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-9 cursor-pointer"
+            >
+              <option value="maintain" selected>Maintain Current Weight</option>
+              <option value="loss-mild">Mild Weight Loss (-0.5 lbs/wk)</option>
+              <option value="loss-normal">Weight Loss (-1.0 lbs/wk)</option>
+              <option value="loss-extreme">Extreme Weight Loss (-2.0 lbs/wk)</option>
+              <option value="gain-mild">Mild Weight Gain (+0.5 lbs/wk)</option>
+              <option value="gain-normal">Weight Gain (+1.0 lbs/wk)</option>
+              <option value="gain-extreme">Extreme Weight Gain (+2.0 lbs/wk)</option>
+            </select>
+          </div>
+
+          <!-- Select Diet Type -->
+          <div>
+            <label for="macro-select-diet" class="block text-[11px] font-semibold uppercase tracking-wider text-body mb-2 font-caption-mono">
+              Diet Type
+            </label>
+            <select
+              id="macro-select-diet"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-9 cursor-pointer"
+            >
+              <option value="balanced" selected>Balanced Diet (50% Carb, 20% Pro, 30% Fat)</option>
+              <option value="high-protein">High Protein (40% Carb, 30% Pro, 30% Fat)</option>
+              <option value="low-carb">Low Carbohydrate (25% Carb, 35% Pro, 40% Fat)</option>
+              <option value="ketogenic">Ketogenic Diet (5% Carb, 25% Pro, 70% Fat)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Render Macro Progress Bars -->
+        <div class="space-y-4 pt-2">
+          <!-- Carbohydrates -->
+          <div>
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-sm font-semibold text-ink">Carbohydrates</span>
+              <span class="text-xs text-body font-caption-mono">
+                <span id="macro-carb-pct">50</span>% &middot; <span id="macro-carb-grams" class="font-bold text-ink">0</span>g &middot; <span id="macro-carb-energy">0</span> <span class="result-unit-text">kcal</span>
+              </span>
+            </div>
+            <div class="w-full bg-canvas-soft-2 h-2.5 rounded-full overflow-hidden border border-hairline">
+              <div id="bar-carb" class="bg-gradient-develop-start h-full rounded-full transition-all duration-500 ease-out" style="width: 50%"></div>
+            </div>
+          </div>
+
+          <!-- Proteins -->
+          <div>
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-sm font-semibold text-ink">Proteins</span>
+              <span class="text-xs text-body font-caption-mono">
+                <span id="macro-pro-pct">20</span>% &middot; <span id="macro-pro-grams" class="font-bold text-ink">0</span>g &middot; <span id="macro-pro-energy">0</span> <span class="result-unit-text">kcal</span>
+              </span>
+            </div>
+            <div class="w-full bg-canvas-soft-2 h-2.5 rounded-full overflow-hidden border border-hairline">
+              <div id="bar-pro" class="bg-gradient-preview-start h-full rounded-full transition-all duration-500 ease-out" style="width: 20%"></div>
+            </div>
+          </div>
+
+          <!-- Fats -->
+          <div>
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-sm font-semibold text-ink">Fats</span>
+              <span class="text-xs text-body font-caption-mono">
+                <span id="macro-fat-pct">30</span>% &middot; <span id="macro-fat-grams" class="font-bold text-ink">0</span>g &middot; <span id="macro-fat-energy">0</span> <span class="result-unit-text">kcal</span>
+              </span>
+            </div>
+            <div class="w-full bg-canvas-soft-2 h-2.5 rounded-full overflow-hidden border border-hairline">
+              <div id="bar-fat" class="bg-gradient-ship-start h-full rounded-full transition-all duration-500 ease-out" style="width: 30%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Script executes in the client browser context.
+  document.addEventListener('DOMContentLoaded', () => {
+    // DOM Elements - Form Inputs
+    const btnUs = document.getElementById('toggle-us');
+    const btnMetric = document.getElementById('toggle-metric');
+    const heightUsContainer = document.getElementById('height-us-container');
+    const heightMetricContainer = document.getElementById('height-metric-container');
+    const inputAge = document.getElementById('input-age');
+    const inputHeightFt = document.getElementById('input-height-ft');
+    const inputHeightIn = document.getElementById('input-height-in');
+    const inputHeightCm = document.getElementById('input-height-cm');
+    const inputWeight = document.getElementById('input-weight');
+    const labelWeight = document.getElementById('label-weight');
+    const badgeWeight = document.getElementById('badge-weight');
+    const inputActivity = document.getElementById('input-activity');
+    
+    // DOM Elements - Advanced Settings Drawer
+    const btnToggleSettings = document.getElementById('toggle-settings');
+    const settingsDrawer = document.getElementById('settings-drawer');
+    const settingsIcon = document.getElementById('settings-icon');
+    const inputFormula = document.getElementById('input-formula');
+    const bodyFatContainer = document.getElementById('body-fat-container');
+    const inputBodyFat = document.getElementById('input-body-fat');
+    
+    // DOM Elements - Output View States
+    const resultsEmpty = document.getElementById('results-empty');
+    const resultsActive = document.getElementById('results-active');
+    
+    // DOM Elements - Output Primary Metrics
+    const resultCalories = document.getElementById('result-calories');
+    const resultBmr = document.getElementById('result-bmr');
+    const resultUnitLabel = document.getElementById('result-unit-label');
+    const resultUnitTexts = document.querySelectorAll('.result-unit-text');
+    const resultUnitAbbrs = document.querySelectorAll('.result-unit-abbr');
+
+    // DOM Elements - Weight Plan Values
+    const lossMild = document.getElementById('loss-mild');
+    const lossNormal = document.getElementById('loss-normal');
+    const lossExtreme = document.getElementById('loss-extreme');
+    const gainMild = document.getElementById('gain-mild');
+    const gainNormal = document.getElementById('gain-normal');
+    const gainExtreme = document.getElementById('gain-extreme');
+
+    // DOM Elements - Warning Indicator
+    const safetyWarning = document.getElementById('safety-warning');
+    const safetyMin = document.getElementById('safety-min');
+
+    // DOM Elements - Macro Breakdowns
+    const macroSelectPlan = document.getElementById('macro-select-plan');
+    const macroSelectDiet = document.getElementById('macro-select-diet');
+    const macroCarbPct = document.getElementById('macro-carb-pct');
+    const macroCarbGrams = document.getElementById('macro-carb-grams');
+    const macroCarbEnergy = document.getElementById('macro-carb-energy');
+    const barCarb = document.getElementById('bar-carb');
+    const macroProPct = document.getElementById('macro-pro-pct');
+    const macroProGrams = document.getElementById('macro-pro-grams');
+    const macroProEnergy = document.getElementById('macro-pro-energy');
+    const barPro = document.getElementById('bar-pro');
+    const macroFatPct = document.getElementById('macro-fat-pct');
+    const macroFatGrams = document.getElementById('macro-fat-grams');
+    const macroFatEnergy = document.getElementById('macro-fat-energy');
+    const barFat = document.getElementById('bar-fat');
+    
+    // Form Action Buttons
+    const btnCalculate = document.getElementById('btn-calculate');
+    const btnClear = document.getElementById('btn-clear');
+
+    // State Variables
+    let isUsUnits = true;
+    let computedMaintenance = 0;
+    
+    // Constants
+    const KJ_CONVERSION_FACTOR = 4.1868;
+
+    // Unit toggle logic
+    btnUs.addEventListener('click', () => {
+      if (isUsUnits) return;
+      isUsUnits = true;
+      btnUs.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnUs.classList.remove('text-body', 'hover:text-ink');
+      btnMetric.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnMetric.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer.classList.remove('hidden');
+      heightMetricContainer.classList.add('hidden');
+      labelWeight.textContent = "Weight (pounds)";
+      badgeWeight.textContent = "lbs";
+
+      // Convert values currently in the form fields
+      const currentCm = parseFloat(inputHeightCm.value);
+      if (!isNaN(currentCm) && currentCm > 0) {
+        const totalInches = currentCm / 2.54;
+        const feet = Math.floor(totalInches / 12);
+        const inches = Math.round(totalInches % 12);
+        inputHeightFt.value = feet;
+        inputHeightIn.value = inches === 12 ? 11 : inches; // clamp border cases
+      }
+
+      const currentKg = parseFloat(inputWeight.value);
+      if (!isNaN(currentKg) && currentKg > 0) {
+        inputWeight.value = Math.round(currentKg * 2.20462);
+      }
+    });
+
+    btnMetric.addEventListener('click', () => {
+      if (!isUsUnits) return;
+      isUsUnits = false;
+      btnMetric.classList.add('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnMetric.classList.remove('text-body', 'hover:text-ink');
+      btnUs.classList.remove('bg-canvas', 'text-ink', 'shadow-level-2');
+      btnUs.classList.add('text-body', 'hover:text-ink');
+
+      heightUsContainer.classList.add('hidden');
+      heightMetricContainer.classList.remove('hidden');
+      labelWeight.textContent = "Weight (kg)";
+      badgeWeight.textContent = "kg";
+
+      // Convert values currently in the form fields
+      const ft = parseFloat(inputHeightFt.value) || 0;
+      const inch = parseFloat(inputHeightIn.value) || 0;
+      const totalInches = (ft * 12) + inch;
+      if (totalInches > 0) {
+        inputHeightCm.value = Math.round(totalInches * 2.54);
+      }
+
+      const currentLbs = parseFloat(inputWeight.value);
+      if (!isNaN(currentLbs) && currentLbs > 0) {
+        inputWeight.value = Math.round(currentLbs / 2.20462);
+      }
+    });
+
+    // Toggle advanced settings foldout
+    btnToggleSettings.addEventListener('click', () => {
+      const isHidden = settingsDrawer.classList.contains('hidden');
+      if (isHidden) {
+        settingsDrawer.classList.remove('hidden');
+        settingsIcon.textContent = '-';
+      } else {
+        settingsDrawer.classList.add('hidden');
+        settingsIcon.textContent = '+';
+      }
+    });
+
+    // Formula selection triggers body fat field display
+    inputFormula.addEventListener('change', () => {
+      if (inputFormula.value === 'katch') {
+        bodyFatContainer.classList.remove('hidden');
+      } else {
+        bodyFatContainer.classList.add('hidden');
+      }
+    });
+
+    // Calculation triggers
+    btnCalculate.addEventListener('click', runCalculations);
+    
+    // Macro recalculation triggers on dropdown changes
+    macroSelectPlan.addEventListener('change', updateMacros);
+    macroSelectDiet.addEventListener('change', updateMacros);
+
+    // Clear form fields
+    btnClear.addEventListener('click', () => {
+      inputAge.value = "25";
+      inputHeightFt.value = "5";
+      inputHeightIn.value = "10";
+      inputHeightCm.value = "178";
+      inputWeight.value = isUsUnits ? "165" : "65";
+      inputActivity.value = "1.465";
+      inputFormula.value = "mifflin";
+      bodyFatContainer.classList.add('hidden');
+      inputBodyFat.value = "20";
+      
+      // Select first option for radio buttons
+      const radCalories = document.querySelector('input[name="results-unit"][value="calories"]');
+      if (radCalories) radCalories.checked = true;
+      
+      // Hide results dashboard and show empty state
+      resultsActive.classList.add('hidden');
+      resultsEmpty.classList.remove('hidden');
+      computedMaintenance = 0;
+    });
+
+    function runCalculations() {
+      // 1. Gather variables and validate
+      const age = parseInt(inputAge.value);
+      if (isNaN(age) || age < 15 || age > 80) {
+        alert("Please enter a valid age between 15 and 80.");
+        inputAge.focus();
+        return;
+      }
+
+      const genderElement = document.querySelector('input[name="gender"]:checked');
+      const gender = genderElement ? genderElement.value : 'male';
+
+      let heightCm = 0;
+      if (isUsUnits) {
+        const ft = parseFloat(inputHeightFt.value);
+        const inch = parseFloat(inputHeightIn.value);
+        if (isNaN(ft) || ft < 3 || ft > 8 || isNaN(inch) || inch < 0 || inch >= 12) {
+          alert("Please enter a valid height in feet (3 - 8) and inches (0 - 11).");
+          inputHeightFt.focus();
+          return;
+        }
+        heightCm = ((ft * 12) + inch) * 2.54;
+      } else {
+        heightCm = parseFloat(inputHeightCm.value);
+        if (isNaN(heightCm) || heightCm < 100 || heightCm > 250) {
+          alert("Please enter a valid height in cm (100 - 250).");
+          inputHeightCm.focus();
+          return;
+        }
+      }
+
+      let weightKg = 0;
+      const weightVal = parseFloat(inputWeight.value);
+      if (isNaN(weightVal) || weightVal < 30 || weightVal > 600) {
+        alert("Please enter a valid weight (30 - 600).");
+        inputWeight.focus();
+        return;
+      }
+      if (isUsUnits) {
+        weightKg = weightVal / 2.20462;
+      } else {
+        weightKg = weightVal;
+      }
+
+      const activityFactor = parseFloat(inputActivity.value);
+      const formula = inputFormula.value;
+      const resultsUnitElement = document.querySelector('input[name="results-unit"]:checked');
+      const resultsUnit = resultsUnitElement ? resultsUnitElement.value : 'calories';
+
+      // 2. Compute BMR
+      let bmr = 0;
+      if (formula === 'mifflin') {
+        // Mifflin-St Jeor Equation
+        if (gender === 'male') {
+          bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+        } else {
+          bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+        }
+      } else if (formula === 'harris') {
+        // Revised Harris-Benedict Equation
+        if (gender === 'male') {
+          bmr = 88.362 + (13.397 * weightKg) + (4.799 * heightCm) - (5.677 * age);
+        } else {
+          bmr = 447.593 + (9.247 * weightKg) + (3.098 * heightCm) - (4.330 * age);
+        }
+      } else if (formula === 'katch') {
+        // Katch-McArdle Formula
+        const bodyFat = parseFloat(inputBodyFat.value);
+        if (isNaN(bodyFat) || bodyFat < 3 || bodyFat > 60) {
+          alert("Please enter a valid body fat percentage between 3% and 60%.");
+          inputBodyFat.focus();
+          return;
+        }
+        const leanMass = weightKg * (1 - (bodyFat / 100));
+        bmr = 370 + (21.6 * leanMass);
+      }
+
+      // 3. Compute TDEE (Maintenance)
+      computedMaintenance = bmr * activityFactor;
+      
+      // Apply unit adjustments (kcal vs kJ)
+      const unitMultiplier = resultsUnit === 'kilojoules' ? KJ_CONVERSION_FACTOR : 1;
+      const unitLabel = resultsUnit === 'kilojoules' ? 'Kilojoules/day' : 'Calories/day';
+      const unitText = resultsUnit === 'kilojoules' ? 'kJ' : 'kcal';
+
+      // Update Unit Headers
+      resultUnitLabel.textContent = unitLabel;
+      resultUnitTexts.forEach(el => el.textContent = unitText);
+      resultUnitAbbrs.forEach(el => el.textContent = unitText);
+
+      // Render Primary values
+      resultCalories.textContent = Math.round(computedMaintenance * unitMultiplier).toLocaleString();
+      resultBmr.textContent = Math.round(bmr * unitMultiplier).toLocaleString();
+
+      // Render Weight Goal items (Losses and Gains)
+      // Standard targets are: Mild (-250), Normal (-500), Extreme (-1000) kcal
+      const plans = {
+        lossMildVal: Math.max(0, computedMaintenance - 250),
+        lossNormalVal: Math.max(0, computedMaintenance - 500),
+        lossExtremeVal: Math.max(0, computedMaintenance - 1000),
+        gainMildVal: computedMaintenance + 250,
+        gainNormalVal: computedMaintenance + 500,
+        gainExtremeVal: computedMaintenance + 1000
+      };
+
+      lossMild.textContent = Math.round(plans.lossMildVal * unitMultiplier).toLocaleString();
+      lossNormal.textContent = Math.round(plans.lossNormalVal * unitMultiplier).toLocaleString();
+      lossExtreme.textContent = Math.round(plans.lossExtremeVal * unitMultiplier).toLocaleString();
+
+      gainMild.textContent = Math.round(plans.gainMildVal * unitMultiplier).toLocaleString();
+      gainNormal.textContent = Math.round(plans.gainNormalVal * unitMultiplier).toLocaleString();
+      gainExtreme.textContent = Math.round(plans.gainExtremeVal * unitMultiplier).toLocaleString();
+
+      // Safety Checks (Minimum calories: 1200 for males, 1000 for females in kcal)
+      const minHealthyCal = gender === 'male' ? 1200 : 1000;
+      safetyMin.textContent = Math.round(minHealthyCal * unitMultiplier).toLocaleString();
+
+      const hasSafetyRisk = (plans.lossMildVal < minHealthyCal || plans.lossNormalVal < minHealthyCal || plans.lossExtremeVal < minHealthyCal);
+      if (hasSafetyRisk) {
+        safetyWarning.classList.remove('hidden');
+      } else {
+        safetyWarning.classList.add('hidden');
+      }
+
+      // Switch views
+      resultsEmpty.classList.add('hidden');
+      resultsActive.classList.remove('hidden');
+
+      // Refresh Macro distributions
+      updateMacros();
+    }
+
+    function updateMacros() {
+      if (computedMaintenance === 0) return;
+
+      // Select Target Plan Daily Calories
+      const selectedPlan = macroSelectPlan.value;
+      let planCal = computedMaintenance;
+
+      if (selectedPlan === 'loss-mild') planCal = Math.max(500, computedMaintenance - 250);
+      else if (selectedPlan === 'loss-normal') planCal = Math.max(500, computedMaintenance - 500);
+      else if (selectedPlan === 'loss-extreme') planCal = Math.max(500, computedMaintenance - 1000);
+      else if (selectedPlan === 'gain-mild') planCal = computedMaintenance + 250;
+      else if (selectedPlan === 'gain-normal') planCal = computedMaintenance + 500;
+      else if (selectedPlan === 'gain-extreme') planCal = computedMaintenance + 1000;
+
+      // Select Diet Percentages (Carb, Pro, Fat)
+      const selectedDiet = macroSelectDiet.value;
+      let pCarb = 50, pPro = 20, pFat = 30;
+
+      if (selectedDiet === 'high-protein') {
+        pCarb = 40; pPro = 30; pFat = 30;
+      } else if (selectedDiet === 'low-carb') {
+        pCarb = 25; pPro = 35; pFat = 40;
+      } else if (selectedDiet === 'ketogenic') {
+        pCarb = 5; pPro = 25; pFat = 70;
+      }
+
+      // Render percentages
+      macroCarbPct.textContent = pCarb;
+      macroProPct.textContent = pPro;
+      macroFatPct.textContent = pFat;
+
+      // Energy contributions (always in final output units - kJ or kcal)
+      const resultsUnitElement = document.querySelector('input[name="results-unit"]:checked');
+      const resultsUnit = resultsUnitElement ? resultsUnitElement.value : 'calories';
+      const unitMultiplier = resultsUnit === 'kilojoules' ? KJ_CONVERSION_FACTOR : 1;
+
+      const carbEnergyVal = planCal * (pCarb / 100);
+      const proEnergyVal = planCal * (pPro / 100);
+      const fatEnergyVal = planCal * (pFat / 100);
+
+      macroCarbEnergy.textContent = Math.round(carbEnergyVal * unitMultiplier).toLocaleString();
+      macroProEnergy.textContent = Math.round(proEnergyVal * unitMultiplier).toLocaleString();
+      macroFatEnergy.textContent = Math.round(fatEnergyVal * unitMultiplier).toLocaleString();
+
+      // Grams are ALWAYS calculated based on calories:
+      // Carbohydrates: 4 kcal per gram
+      // Proteins: 4 kcal per gram
+      // Fats: 9 kcal per gram
+      const gCarb = Math.round(carbEnergyVal / 4);
+      const gPro = Math.round(proEnergyVal / 4);
+      const gFat = Math.round(fatEnergyVal / 9);
+
+      macroCarbGrams.textContent = gCarb.toLocaleString();
+      macroProGrams.textContent = gPro.toLocaleString();
+      macroFatGrams.textContent = gFat.toLocaleString();
+
+      // Update progress bar widths
+      barCarb.style.width = `${pCarb}%`;
+      barPro.style.width = `${pPro}%`;
+      barFat.style.width = `${pFat}%`;
+    }
+  });
+</script>
