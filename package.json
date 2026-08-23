@@ -10,8 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && wrangler deploy",
-    "deploy:assets": "wrangler deploy"
+    "deploy": "astro build && npx wrangler deploy",
+    "deploy:assets": "npx wrangler deploy"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
