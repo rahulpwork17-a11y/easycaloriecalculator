@@ -19,11 +19,13 @@
           <input
             type="number"
             id="recipe-input-servings"
+            name="servings"
+            autocomplete="off"
             min="1"
             max="100"
             value="4"
             required
-            class="w-full max-w-[120px] bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            class="w-full max-w-[120px] bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
           />
           <span class="text-xs text-mute mt-1 block">Divide total recipe calories by this number</span>
         </div>
@@ -44,26 +46,32 @@
               <div class="col-span-5">
                 <input
                   type="text"
+                  name="ing-name"
+                  autocomplete="off"
                   placeholder="e.g. Chicken Breast"
-                  class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                  class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
                 />
               </div>
               <div class="col-span-3 relative">
                 <input
                   type="number"
+                  name="ing-weight"
+                  autocomplete="off"
                   placeholder="200"
                   min="0.1"
                   step="any"
-                  class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                  class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
                 />
                 <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
               </div>
               <div class="col-span-3 relative">
                 <input
                   type="number"
+                  name="ing-calories"
+                  autocomplete="off"
                   placeholder="165"
                   min="0"
-                  class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                  class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
                   title="Calories per 100 grams of this food item"
                 />
                 <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
@@ -74,6 +82,7 @@
                   type="button"
                   class="btn-delete-row text-mute hover:text-error transition-colors duration-150 p-1"
                   title="Delete ingredient"
+                  aria-label="Delete ingredient row"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -130,7 +139,7 @@
     </div>
 
     <!-- Active Dashboard -->
-    <div id="recipe-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300">
+    <div id="recipe-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300 animate-fade-in-up">
       <!-- Main Metric highlights -->
       <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 relative overflow-hidden">
         <div class="absolute -right-20 -top-20 w-48 h-48 bg-gradient-to-br from-cyan-soft via-violet-soft to-highlight-pink opacity-25 blur-3xl pointer-events-none rounded-full"></div>
@@ -202,7 +211,7 @@
         </div>
 
         <p id="density-desc" class="text-[11px] text-body leading-relaxed pt-2 border-t border-hairline">
-          Adding ingredients...
+          Adding ingredients…
         </p>
       </div>
 
@@ -223,7 +232,8 @@
           </label>
           <select
             id="recipe-macro-diet"
-            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-xs focus:outline-none focus:border-hairline-strong h-9 cursor-pointer"
+            name="macro-diet"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-xs focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink h-9 cursor-pointer"
           >
             <option value="balanced" selected>Balanced Portion (50% Carb, 20% Pro, 30% Fat)</option>
             <option value="high-protein">High Protein Portion (40% Carb, 30% Pro, 30% Fat)</option>
@@ -313,26 +323,32 @@
         <div class="col-span-5">
           <input
             type="text"
+            name="ing-name"
+            autocomplete="off"
             placeholder="e.g. Olive Oil"
-            class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+            class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
           />
         </div>
         <div class="col-span-3 relative">
           <input
             type="number"
+            name="ing-weight"
+            autocomplete="off"
             placeholder="15"
             min="0.1"
             step="any"
-            class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+            class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
           />
           <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
         </div>
         <div class="col-span-3 relative">
           <input
             type="number"
+            name="ing-calories"
+            autocomplete="off"
             placeholder="884"
             min="0"
-            class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+            class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
           />
           <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
         </div>
@@ -341,6 +357,7 @@
           <button
             type="button"
             class="btn-delete-row text-mute hover:text-error transition-colors duration-150 p-1"
+            aria-label="Delete ingredient row"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -483,26 +500,32 @@
             <div class="col-span-5">
               <input
                 type="text"
+                name="ing-name"
+                autocomplete="off"
                 placeholder="e.g. Chicken Breast"
-                class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
               />
             </div>
             <div class="col-span-3 relative">
               <input
                 type="number"
+                name="ing-weight"
+                autocomplete="off"
                 placeholder="200"
                 min="0.1"
                 step="any"
-                class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
               />
               <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
             </div>
             <div class="col-span-3 relative">
               <input
                 type="number"
+                name="ing-calories"
+                autocomplete="off"
                 placeholder="165"
                 min="0"
-                class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:border-hairline-strong transition-all"
+                class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
               />
               <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
             </div>
@@ -510,6 +533,7 @@
               <button
                 type="button"
                 class="btn-delete-row text-mute hover:text-error transition-colors duration-150 p-1"
+                aria-label="Delete ingredient row"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />

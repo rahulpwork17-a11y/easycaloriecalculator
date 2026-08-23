@@ -34,11 +34,13 @@
           <input
             type="number"
             id="mc-input-age"
+            name="age"
+            autocomplete="off"
             min="15"
             max="80"
             value="25"
             required
-            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
           />
           <span class="text-xs text-mute mt-1 block">Ages 15 - 80</span>
         </div>
@@ -70,11 +72,13 @@
               <input
                 type="number"
                 id="mc-input-height-ft"
+                name="height-ft"
+                autocomplete="off"
                 min="3"
                 max="8"
                 value="5"
                 required
-                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
               />
               <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">ft</span>
             </div>
@@ -82,11 +86,13 @@
               <input
                 type="number"
                 id="mc-input-height-in"
+                name="height-in"
+                autocomplete="off"
                 min="0"
                 max="11"
                 value="10"
                 required
-                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+                class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
               />
               <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">in</span>
             </div>
@@ -101,10 +107,12 @@
             <input
               type="number"
               id="mc-input-height-cm"
+              name="height-cm"
+              autocomplete="off"
               min="100"
               max="250"
               value="178"
-              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
             />
             <span class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">cm</span>
           </div>
@@ -119,11 +127,13 @@
             <input
               type="number"
               id="mc-input-weight"
+              name="weight"
+              autocomplete="off"
               min="30"
               max="600"
               value="165"
               required
-              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10"
+              class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 pr-12 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10"
             />
             <span id="mc-badge-weight" class="absolute right-3 top-2.5 text-xs text-mute font-caption-mono pointer-events-none">lbs</span>
           </div>
@@ -136,7 +146,8 @@
           </label>
           <select
             id="mc-input-activity"
-            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:border-hairline-strong transition-all duration-200 h-10 cursor-pointer"
+            name="activity"
+            class="w-full bg-canvas text-ink border border-hairline rounded-sm px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-10 cursor-pointer"
           >
             <option value="1">Basal Metabolic Rate (BMR)</option>
             <option value="1.2">Sedentary: little or no exercise</option>
@@ -185,10 +196,12 @@
                 <input
                   type="number"
                   id="mc-input-body-fat"
+                  name="body-fat"
+                  autocomplete="off"
                   min="3"
                   max="60"
                   value="20"
-                  class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs focus:outline-none focus:border-hairline-strong transition-all duration-200 h-8"
+                  class="w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all duration-200 h-8"
                 />
                 <span class="absolute right-2 top-1.5 text-xs text-mute font-caption-mono pointer-events-none">%</span>
               </div>
@@ -233,7 +246,7 @@
     </div>
 
     <!-- Active Dashboard -->
-    <div id="mc-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300">
+    <div id="mc-results-active" class="hidden flex-1 flex flex-col space-y-6 transition-all duration-300 animate-fade-in-up">
       <!-- Side-by-side Highlights -->
       <div class="bg-canvas border border-hairline shadow-level-3 rounded-lg p-6 relative overflow-hidden">
         <div class="absolute -right-20 -top-20 w-48 h-48 bg-gradient-to-br from-cyan-soft via-violet-soft to-highlight-pink opacity-25 blur-3xl pointer-events-none rounded-full"></div>

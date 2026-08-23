@@ -29,9 +29,11 @@
       <input
         type="number"
         id="conv-source-val"
+        name="source-val"
+        autocomplete="off"
         value="1"
         step="any"
-        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-3 text-sm focus:outline-none focus:border-white/30 transition-all duration-200 h-10"
+        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-3 text-sm focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all duration-200 h-10"
       />
     </div>
 
@@ -42,7 +44,8 @@
       </label>
       <select
         id="conv-source-unit"
-        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-2 text-sm focus:outline-none focus:border-white/30 transition-all duration-200 h-10 cursor-pointer"
+        name="source-unit"
+        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-2 text-sm focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all duration-200 h-10 cursor-pointer"
       >
         <option value="kcal" selected class="bg-neutral-900 text-white">Calorie [kcal]</option>
         <option value="cal" class="bg-neutral-900 text-white">calorie [cal]</option>
@@ -65,15 +68,18 @@
         <input
           type="text"
           id="conv-target-val"
+          name="target-val"
+          autocomplete="off"
           readonly
-          value="4.184"
-          class="w-full bg-white/5 text-white/90 border border-white/10 rounded-sm px-3 text-sm focus:outline-none h-10 select-all cursor-default"
+          value="4.1868"
+          class="w-full bg-white/5 text-white/90 border border-white/10 rounded-sm px-3 text-sm focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 h-10 select-all cursor-default"
         />
         <button 
           id="btn-copy-conv" 
           type="button"
           class="absolute right-2 top-2 text-white/40 hover:text-white transition-colors duration-150 p-1"
           title="Copy value"
+          aria-label="Copy converted value"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H5.4m1.5 12.5a3 3 0 1 1-3-3m3 3a3 3 0 1 0-3-3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -89,7 +95,8 @@
       </label>
       <select
         id="conv-target-unit"
-        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-2 text-sm focus:outline-none focus:border-white/30 transition-all duration-200 h-10 cursor-pointer"
+        name="target-unit"
+        class="w-full bg-white/5 text-white border border-white/10 rounded-sm px-2 text-sm focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all duration-200 h-10 cursor-pointer"
       >
         <option value="kcal" class="bg-neutral-900 text-white">Calorie [kcal]</option>
         <option value="cal" class="bg-neutral-900 text-white">calorie [cal]</option>
@@ -108,13 +115,13 @@
     const tgtUnit = document.getElementById('conv-target-unit');
     const btnCopy = document.getElementById('btn-copy-conv');
 
-    // 1 kcal = 1000 cal = 4.184 kJ = 4184 J
+    // 1 kcal = 1000 cal = 4.1868 kJ = 4186.8 J
     // Conversion factors to base unit "Joule (J)"
     const factorsToJoule = {
       J: 1,
       kJ: 1000,
-      cal: 4.184,
-      kcal: 4184
+      cal: 4.1868,
+      kcal: 4186.8
     };
 
     function recalculate() {
