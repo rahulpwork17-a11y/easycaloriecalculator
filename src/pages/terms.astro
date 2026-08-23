@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdated = "August 23, 2026";
+---
+
+<Layout
+  title="Terms & Conditions - Easy Calorie Calculator"
+  description="Read the terms and conditions for using Easy Calorie Calculator. Understand your rights and responsibilities when using our calorie calculation tools."
+>
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="relative w-full overflow-hidden bg-canvas py-12 md:py-16 border-b border-hairline">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_30%_20%,rgba(80,227,194,0.05)_0px,transparent_50%),radial-gradient(at_70%_20%,rgba(121,40,202,0.04)_0px,transparent_50%)] pointer-events-none"></div>
+    <div class="w-full max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10 space-y-4">
+      <span class="inline-flex items-center gap-1.5 font-caption-mono text-xs text-body bg-canvas-soft-2 border border-hairline px-3 py-1 rounded-full">
+        Legal
+      </span>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg max-w-xl mx-auto leading-none">
+        Terms & Conditions
+      </h1>
+      <p class="text-sm md:text-base text-body max-w-lg mx-auto leading-relaxed">
+        Please read these terms carefully before using Easy Calorie Calculator.
+      </p>
+      <p class="text-xs text-mute font-caption-mono">Last updated: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section class="w-full py-12 md:py-16 bg-canvas-soft">
+    <div class="w-full max-w-3xl mx-auto px-4 md:px-6 space-y-10">
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">1. Acceptance of Terms</h2>
+        <p class="text-sm text-body leading-relaxed">
+          By accessing or using Easy Calorie Calculator at <strong class="text-ink">easycaloriecalculator.com</strong>, you agree to be bound by these Terms & Conditions. If you do not agree with any part of these terms, please do not use our service.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">2. Medical Disclaimer</h2>
+        <div class="bg-warning-soft border border-warning/20 rounded-lg px-4 py-3">
+          <p class="text-sm text-warning-deep font-medium leading-relaxed">
+            ⚠️ Important: The calorie calculations and dietary information provided on this site are for general informational and educational purposes only. They are not intended to be a substitute for professional medical advice, diagnosis, or treatment.
+          </p>
+        </div>
+        <p class="text-sm text-body leading-relaxed">
+          Always seek the advice of your physician, registered dietitian, or other qualified healthcare provider with any questions you may have regarding a medical condition, dietary changes, or nutritional program. Never disregard professional medical advice or delay in seeking it because of something you have read on this website.
+        </p>
+        <p class="text-sm text-body leading-relaxed">
+          All calculations are <strong class="text-ink">estimates</strong> based on widely accepted scientific formulas (Mifflin-St Jeor, Harris-Benedict, Katch-McArdle). Individual metabolic rates can vary significantly. Results should be treated as a starting point, not a prescription.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">3. Use of the Service</h2>
+        <p class="text-sm text-body leading-relaxed">You agree to use Easy Calorie Calculator only for lawful purposes. You must not:</p>
+        <ul class="list-disc pl-5 space-y-1.5 text-sm text-body">
+          <li>Use the service in any way that violates applicable laws or regulations.</li>
+          <li>Attempt to gain unauthorized access to any part of the service or its infrastructure.</li>
+          <li>Use automated tools to scrape, crawl, or otherwise extract data from the site at scale.</li>
+          <li>Misrepresent the outputs of our calculators as certified medical or clinical assessments.</li>
+        </ul>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">4. Accuracy of Information</h2>
+        <p class="text-sm text-body leading-relaxed">
+          We strive to keep the formulas and information on this site accurate and up-to-date. However, we make no warranty or representation — express or implied — regarding the completeness, accuracy, reliability, or suitability of any information provided.
+        </p>
+        <p class="text-sm text-body leading-relaxed">
+          Nutritional science evolves continuously. Calorie equations are population-based averages and may not precisely reflect your individual metabolism.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">5. Limitation of Liability</h2>
+        <p class="text-sm text-body leading-relaxed">
+          To the fullest extent permitted by applicable law, Easy Calorie Calculator and its operators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising out of your access to or use of (or inability to use) the service, even if we have been advised of the possibility of such damages.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">6. Intellectual Property</h2>
+        <p class="text-sm text-body leading-relaxed">
+          All content on this site — including text, graphics, logos, and code — is the property of Easy Calorie Calculator or its content suppliers and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">7. Third-Party Links</h2>
+        <p class="text-sm text-body leading-relaxed">
+          Our site may contain links to external websites. These links are provided for your convenience only. We have no control over the content of those sites and accept no responsibility for them or for any loss or damage that may arise from your use of them.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">8. Changes to Terms</h2>
+        <p class="text-sm text-body leading-relaxed">
+          We reserve the right to modify these Terms & Conditions at any time. Changes take effect immediately upon posting. Your continued use of the site after any changes constitutes your acceptance of the new terms.
+        </p>
+      </div>
+
+      <div class="bg-canvas rounded-xl border border-hairline p-6 md:p-8 space-y-4 shadow-level-2">
+        <h2 class="text-lg font-bold text-ink font-display-sm">9. Contact</h2>
+        <p class="text-sm text-body leading-relaxed">
+          Questions about these Terms? Visit our <a href="/contact" class="text-ink underline underline-offset-2 hover:opacity-70 transition-opacity">Contact Us</a> page.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
