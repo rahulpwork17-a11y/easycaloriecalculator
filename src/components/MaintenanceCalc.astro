@@ -290,32 +290,36 @@
           </h3>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 text-center text-xs pb-1 border-b border-hairline text-mute font-caption-mono">
-          <div>Equation</div>
-          <div>BMR</div>
-          <div>TDEE (Maintenance)</div>
-        </div>
+        <div class="overflow-x-auto -mx-1">
+          <div class="min-w-[280px]">
+            <div class="grid grid-cols-3 gap-2 text-center text-xs pb-1 border-b border-hairline text-mute font-caption-mono">
+              <div class="text-left">Equation</div>
+              <div>BMR</div>
+              <div>TDEE</div>
+            </div>
 
-        <div class="space-y-2.5">
-          <!-- Mifflin -->
-          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
-            <div class="font-bold text-ink text-left pl-2">Mifflin-St Jeor</div>
-            <div class="font-caption-mono text-body"><span id="mc-f-mifflin-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
-            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-mifflin-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
-          </div>
+            <div class="space-y-2.5">
+              <!-- Mifflin -->
+              <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
+                <div class="font-bold text-ink text-left pl-1 text-xs">Mifflin-St Jeor</div>
+                <div class="font-caption-mono text-body text-xs"><span id="mc-f-mifflin-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+                <div class="font-caption-mono font-bold text-ink text-xs"><span id="mc-f-mifflin-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+              </div>
 
-          <!-- Harris -->
-          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0 bg-canvas-soft">
-            <div class="font-bold text-ink text-left pl-2">Harris-Benedict</div>
-            <div class="font-caption-mono text-body"><span id="mc-f-harris-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
-            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-harris-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
-          </div>
+              <!-- Harris -->
+              <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0 bg-canvas-soft">
+                <div class="font-bold text-ink text-left pl-1 text-xs">Harris-Benedict</div>
+                <div class="font-caption-mono text-body text-xs"><span id="mc-f-harris-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+                <div class="font-caption-mono font-bold text-ink text-xs"><span id="mc-f-harris-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+              </div>
 
-          <!-- Katch -->
-          <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
-            <div class="font-bold text-ink text-left pl-2">Katch-McArdle</div>
-            <div class="font-caption-mono text-body"><span id="mc-f-katch-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
-            <div class="font-caption-mono font-bold text-ink"><span id="mc-f-katch-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+              <!-- Katch -->
+              <div class="grid grid-cols-3 gap-2 text-sm text-center py-1.5 hover:bg-canvas-soft-2 rounded-sm transition-all border-b border-hairline last:border-0">
+                <div class="font-bold text-ink text-left pl-1 text-xs">Katch-McArdle</div>
+                <div class="font-caption-mono text-body text-xs"><span id="mc-f-katch-bmr">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+                <div class="font-caption-mono font-bold text-ink text-xs"><span id="mc-f-katch-tdee">0</span> <span class="mc-unit-abbr text-[10px]">kcal</span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

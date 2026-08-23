@@ -42,45 +42,45 @@
           <!-- Dynamic ingredient rows -->
           <div id="ingredients-list" class="space-y-3">
             <!-- Row 1 (default) -->
-            <div class="ingredient-row grid grid-cols-12 gap-2 items-center bg-canvas-soft-2 border border-hairline rounded-sm p-3 relative group transition-all duration-200">
-              <div class="col-span-5">
-                <input
-                  type="text"
-                  name="ing-name"
-                  autocomplete="off"
-                  placeholder="e.g. Chicken Breast"
-                  class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-                />
-              </div>
-              <div class="col-span-3 relative">
-                <input
-                  type="number"
-                  name="ing-weight"
-                  autocomplete="off"
-                  placeholder="200"
-                  min="0.1"
-                  step="any"
-                  class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-                />
-                <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
-              </div>
-              <div class="col-span-3 relative">
-                <input
-                  type="number"
-                  name="ing-calories"
-                  autocomplete="off"
-                  placeholder="165"
-                  min="0"
-                  class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-                  title="Calories per 100 grams of this food item"
-                />
-                <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
-              </div>
-              <!-- Delete button -->
-              <div class="col-span-1 flex justify-center">
+            <div class="ingredient-row flex flex-col gap-2 bg-canvas-soft-2 border border-hairline rounded-sm p-3 relative group transition-all duration-200">
+              <!-- Name (full width) -->
+              <input
+                type="text"
+                name="ing-name"
+                autocomplete="off"
+                placeholder="e.g. Chicken Breast"
+                class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+              />
+              <!-- Weight + Calories + Delete on same row -->
+              <div class="flex gap-2 items-center">
+                <div class="relative flex-1">
+                  <input
+                    type="number"
+                    name="ing-weight"
+                    autocomplete="off"
+                    placeholder="200"
+                    min="0.1"
+                    step="any"
+                    class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+                  />
+                  <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
+                </div>
+                <div class="relative flex-1">
+                  <input
+                    type="number"
+                    name="ing-calories"
+                    autocomplete="off"
+                    placeholder="165"
+                    min="0"
+                    class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-10 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+                    title="Calories per 100 grams of this food item"
+                  />
+                  <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
+                </div>
+                <!-- Delete button -->
                 <button
                   type="button"
-                  class="btn-delete-row text-mute hover:text-error transition-colors duration-150 p-1"
+                  class="btn-delete-row flex-shrink-0 text-mute hover:text-error transition-colors duration-150 p-1"
                   title="Delete ingredient"
                   aria-label="Delete ingredient row"
                 >
@@ -318,45 +318,43 @@
       if (!listContainer) return;
       
       const newRow = document.createElement('div');
-      newRow.className = "ingredient-row grid grid-cols-12 gap-2 items-center bg-canvas-soft-2 border border-hairline rounded-sm p-3 relative group transition-all duration-200";
+      newRow.className = "ingredient-row flex flex-col gap-2 bg-canvas-soft-2 border border-hairline rounded-sm p-3 relative group transition-all duration-200";
       newRow.innerHTML = `
-        <div class="col-span-5">
-          <input
-            type="text"
-            name="ing-name"
-            autocomplete="off"
-            placeholder="e.g. Olive Oil"
-            class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-          />
-        </div>
-        <div class="col-span-3 relative">
-          <input
-            type="number"
-            name="ing-weight"
-            autocomplete="off"
-            placeholder="15"
-            min="0.1"
-            step="any"
-            class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-          />
-          <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
-        </div>
-        <div class="col-span-3 relative">
-          <input
-            type="number"
-            name="ing-calories"
-            autocomplete="off"
-            placeholder="884"
-            min="0"
-            class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-8 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
-          />
-          <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
-        </div>
-        <!-- Delete button -->
-        <div class="col-span-1 flex justify-center">
+        <input
+          type="text"
+          name="ing-name"
+          autocomplete="off"
+          placeholder="e.g. Olive Oil"
+          class="ing-name w-full bg-canvas text-ink border border-hairline rounded-sm px-2 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+        />
+        <div class="flex gap-2 items-center">
+          <div class="relative flex-1">
+            <input
+              type="number"
+              name="ing-weight"
+              autocomplete="off"
+              placeholder="15"
+              min="0.1"
+              step="any"
+              class="ing-weight w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-6 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+            />
+            <span class="absolute right-1.5 top-1.5 text-[9px] text-mute font-caption-mono">g</span>
+          </div>
+          <div class="relative flex-1">
+            <input
+              type="number"
+              name="ing-calories"
+              autocomplete="off"
+              placeholder="884"
+              min="0"
+              class="ing-calories w-full bg-canvas text-ink border border-hairline rounded-sm px-2 pr-10 text-xs h-8 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink transition-all"
+            />
+            <span class="absolute right-1 top-1.5 text-[9px] text-mute font-caption-mono">kcal/100g</span>
+          </div>
+          <!-- Delete button -->
           <button
             type="button"
-            class="btn-delete-row text-mute hover:text-error transition-colors duration-150 p-1"
+            class="btn-delete-row flex-shrink-0 text-mute hover:text-error transition-colors duration-150 p-1"
             aria-label="Delete ingredient row"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5">

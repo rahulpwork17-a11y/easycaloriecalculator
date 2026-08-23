@@ -5,19 +5,22 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
 ---
 
 <header class="sticky top-0 z-50 w-full h-[64px] bg-canvas/80 backdrop-blur-md border-b border-hairline flex items-center">
-  <div class="w-full max-w-6xl mx-auto px-6 flex justify-between items-center">
+  <div class="w-full max-w-6xl mx-auto px-4 md:px-6 flex justify-between items-center">
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-primary">
+    <a href="/" class="flex items-center gap-2 hover:opacity-90 transition-opacity min-w-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-primary flex-shrink-0">
         <path fill-rule="evenodd" d="M12.969 18.943c-2.172.067-4.449-.106-6.17-1.127a5.016 5.016 0 0 1-2.502-4.329c0-1.905.77-3.921 2.224-5.337a.75.75 0 0 1 1.092.012c.22.253.476.578.709.837.115.127.228.252.337.362a.75.75 0 0 1 .116.899 3.52 3.52 0 0 0-.432 1.549c.074.808.438 1.336 1.006 1.702 1.411.91 3.56.179 4.234-1.242a.75.75 0 0 1 1.15-.356c.208.156.585.467.9.782.154.154.306.314.456.462a.75.75 0 0 1 .073 1.011 8.311 8.311 0 0 1-3.138 3.518c-.866.527-1.782.748-2.693.818Z" clip-rule="evenodd" />
         <path d="M10.422 2.034a.75.75 0 0 1 .655.45c.018.037.222.45.605.99.326.46.75 1.04 1.168 1.57a14.237 14.237 0 0 1 1.704 2.658c.773 1.561.986 2.923.646 3.901a.75.75 0 0 1-1.18.358c-.12-.092-.302-.252-.499-.447a15.647 15.647 0 0 1-1.378-1.584c-.262-.354-.512-.73-.728-1.08a9.199 9.199 0 0 1-.528-1.017.75.75 0 0 1 .08-.799 5.907 5.907 0 0 0 .741-2.822c0-.361-.074-.771-.162-1.177a5.547 5.547 0 0 0-.156-.569.75.75 0 0 1 .232-.782Z" />
       </svg>
-      <span class="text-sm font-semibold tracking-tight font-display-sm text-ink select-none">
+      <span class="text-sm font-semibold tracking-tight font-display-sm text-ink select-none hidden sm:block">
         easycaloriecalculator.com
+      </span>
+      <span class="text-sm font-semibold tracking-tight font-display-sm text-ink select-none sm:hidden">
+        EasyCalorie
       </span>
     </a>
 
-    <!-- Navigation Links -->
+    <!-- Navigation Links (desktop) -->
     <nav class="hidden md:flex gap-1 items-center">
       <a 
         href="/daily-calculator" 
@@ -62,7 +65,7 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
     </nav>
 
     <!-- Right CTAs -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
       <!-- Theme Toggle Button -->
       <button
         id="theme-toggle"
@@ -104,10 +107,75 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
         </svg>
       </button>
 
-      <span class="font-caption-mono text-[10px] bg-cyan-soft text-cyan-deep border border-cyan-deep/15 px-2 py-0.5 rounded-full font-semibold">
+      <span class="font-caption-mono text-[10px] bg-cyan-soft text-cyan-deep border border-cyan-deep/15 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">
         Web App v1.0
       </span>
+
+      <!-- Hamburger button (mobile only) -->
+      <button
+        id="mobile-menu-btn"
+        type="button"
+        class="md:hidden w-8 h-8 flex items-center justify-center rounded-full border border-hairline hover:bg-canvas-soft-2 text-ink transition-all duration-150 cursor-pointer"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+      >
+        <svg id="mobile-menu-icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg id="mobile-menu-icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Navigation Dropdown -->
+  <div
+    id="mobile-nav"
+    class="hidden absolute top-[64px] left-0 right-0 bg-canvas border-b border-hairline shadow-level-3 z-50 md:hidden"
+  >
+    <nav class="flex flex-col px-4 py-3 gap-1">
+      <a
+        href="/daily-calculator"
+        class={`text-sm font-medium px-4 py-3 rounded-lg transition-all ${
+          cleanPath === "/daily-calculator"
+            ? "bg-canvas-soft-2 text-ink font-semibold"
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Daily Calorie Calculator
+      </a>
+      <a
+        href="/weight-loss-calculator"
+        class={`text-sm font-medium px-4 py-3 rounded-lg transition-all ${
+          cleanPath === "/weight-loss-calculator"
+            ? "bg-canvas-soft-2 text-ink font-semibold"
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Weight Loss Calculator
+      </a>
+      <a
+        href="/maintenance-calculator"
+        class={`text-sm font-medium px-4 py-3 rounded-lg transition-all ${
+          cleanPath === "/maintenance-calculator"
+            ? "bg-canvas-soft-2 text-ink font-semibold"
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Maintenance Calculator
+      </a>
+      <a
+        href="/recipe-calculator"
+        class={`text-sm font-medium px-4 py-3 rounded-lg transition-all ${
+          cleanPath === "/recipe-calculator"
+            ? "bg-canvas-soft-2 text-ink font-semibold"
+            : "text-body hover:text-ink hover:bg-canvas-soft-2"
+        }`}
+      >
+        Recipe Calorie Calculator
+      </a>
+    </nav>
   </div>
 </header>
 
@@ -144,6 +212,40 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
     });
   }
 
+  // Mobile menu toggle
+  function setupMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const nav = document.getElementById('mobile-nav');
+    const iconOpen = document.getElementById('mobile-menu-icon-open');
+    const iconClose = document.getElementById('mobile-menu-icon-close');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = !nav?.classList.contains('hidden');
+      if (isOpen) {
+        nav?.classList.add('hidden');
+        iconOpen?.classList.remove('hidden');
+        iconClose?.classList.add('hidden');
+        btn?.setAttribute('aria-expanded', 'false');
+      } else {
+        nav?.classList.remove('hidden');
+        iconOpen?.classList.add('hidden');
+        iconClose?.classList.remove('hidden');
+        btn?.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Close on nav link click
+    nav?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav?.classList.add('hidden');
+        iconOpen?.classList.remove('hidden');
+        iconClose?.classList.add('hidden');
+        btn?.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
   // Set up immediately and on page transitions if SPA-like, or on load
   setupThemeToggle();
+  setupMobileMenu();
 </script>
