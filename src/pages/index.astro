@@ -6,7 +6,7 @@ import DailyCalc from '../components/DailyCalc.astro';
 import EnergyConverter from '../components/EnergyConverter.astro';
 ---
 
-<Layout title="Calorie Calculator Platform - Lose, Maintain, or Gain Weight." description="A comprehensive suite of specialized metabolic calculators including Daily Calorie, Weight Loss Deficit, TDEE Maintenance, and Recipe Calorie Density tools.">
+<Layout title="Calorie Calculator - Free Daily Calorie Intake Calculator" description="Use our free calorie calculator to estimate your daily energy needs. Compare BMR & TDEE formulas. Includes a maintenance calorie calculator, food calorie calculator, calorie calculator for weight loss, recipe calorie calculator, and calorie calculator to gain weight.">
   <Header />
 
   <!-- Hero Section -->
@@ -149,6 +149,143 @@ import EnergyConverter from '../components/EnergyConverter.astro';
   <section id="converter" class="w-full py-16 bg-canvas border-b border-hairline relative">
     <div class="w-full max-w-6xl mx-auto px-6">
       <EnergyConverter />
+    </div>
+  </section>
+
+  <!-- Detailed SEO Educational Guide -->
+  <section id="guide" class="w-full py-16 md:py-24 bg-canvas border-b border-hairline relative">
+    <div class="absolute inset-0 w-full h-full bg-[radial-gradient(at_70%_80%,rgba(121,40,202,0.02)_0px,transparent_50%)] pointer-events-none"></div>
+    <div class="w-full max-w-4xl mx-auto px-6 relative z-10 space-y-12">
+      <!-- Title -->
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="font-caption-mono text-xs text-body uppercase tracking-wider block">Comprehensive Guide</span>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-ink font-display-lg">
+          Metabolic Science & Energy Management
+        </h2>
+        <p class="text-sm text-body">
+          How to systematically use a calorie calculator to achieve your weight management goals.
+        </p>
+      </div>
+
+      <!-- Text Content -->
+      <div class="prose dark:prose-invert max-w-none text-sm text-body leading-relaxed space-y-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">1. Understanding the Role of a Calorie Calculator</h3>
+          <p>
+            At its core, a <strong>calorie calculator</strong> is a physiological modeling tool that estimates the amount of food energy your body requires to support daily life and physical activities. Energy is measured in kilocalories (kcal) or kilojoules (kJ). Maintaining an exact awareness of your daily energy balance is the single most important element in achieving healthy weight changes or preserving your current physique.
+          </p>
+          <p>
+            Every physical change you experience is governed by the laws of thermodynamics. When you consume exactly the amount of energy your body expends, you maintain a state of caloric equilibrium. Deviations from this baseline trigger your body to either store excess energy as fat or burn existing tissues for fuel.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">2. Basal Metabolic Rate vs. Daily Energy Expenditure</h3>
+          <p>
+            To successfully estimate your requirements, a calorie calculator breaks down energy consumption into two primary numbers:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>
+              <strong>Basal Metabolic Rate (BMR):</strong> The baseline number of calories your organs burn at absolute rest in a thermo-neutral environment. BMR is the cost of keeping your brain active, lungs breathing, heart beating, and cells repairing, without any external physical activity.
+            </li>
+            <li>
+              <strong>Total Daily Energy Expenditure (TDEE):</strong> The actual number of calories burned in a full 24-hour cycle. It represents your BMR multiplied by a physical activity factor representing physical activity levels (exercise, labor) and the thermic effect of food (digesting nutrients).
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">3. Finding Your Baseline with a Maintenance Calorie Calculator</h3>
+          <p>
+            To formulate a custom nutrition plan, you must first calculate your daily maintenance calories. A <strong>maintenance calorie calculator</strong> estimates your baseline TDEE using standardized mathematical models. Consuming exactly this amount allows you to maintain your weight stable over time.
+          </p>
+          <p>
+            Different populations have unique muscle densities and metabolic baselines. To ensure maximum clinical consistency, this platform computes BMR and TDEE across three leading scientific formulas:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>
+              <strong>Mifflin-St Jeor:</strong> The current global clinical standard for estimating energy requirements when body fat is unknown.
+            </li>
+            <li>
+              <strong>Revised Harris-Benedict:</strong> A historically prominent formula developed in 1918 and updated in 1984, widely respected for standard metabolic calculations.
+            </li>
+            <li>
+              <strong>Katch-McArdle:</strong> The most precise formula for athletic individuals. It relies strictly on Lean Body Mass (LBM), excluding body fat from the equation to calculate pure active metabolic tissue requirements.
+            </li>
+          </ul>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">4. Customizing a Calorie Calculator for Weight Loss</h3>
+          <p>
+            Fat loss requires a sustained energy deficit. A <strong>calorie calculator for weight loss</strong> helps you calculate the safe, sustainable calorie deficit needed to reduce fat mass while preserving active muscle tissue.
+          </p>
+          <p>
+            Medical standards recommend aiming for a target weight loss of 0.5 to 2.0 pounds (0.25 to 1.0 kg) per week. This targets a deficit of 250 to 1,000 calories below your daily TDEE. However, cutting calories too aggressively can trigger a metabolic down-regulation (the starvation response) where thyroid output slows, muscle tissue is metabolized for fuel, and severe hunger hormones are triggered. To prevent this, our weight loss calculators include integrated safety thresholds, warning users if daily targets drop below 1,200 calories (for males) or 1,000 calories (for females).
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">5. Using a Calorie Calculator to Gain Weight</h3>
+          <p>
+            To build lean mass or recover from metabolic down-regulation, you must establish an energy surplus. A <strong>calorie calculator to gain weight</strong> calculates a controlled surplus, ensuring that mass gains are lean muscle rather than fat.
+          </p>
+          <p>
+            For clean muscle hypertrophy, a minor daily surplus of 250 to 500 calories is recommended. This surplus provides the extra amino acids and glycogen needed to rebuild muscle tissue damaged during strength training. Excesses beyond 500 calories per day typically accumulate as body fat, making a metered, controlled surplus the optimal choice.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">6. Meal Planning with a Food Calorie Calculator & Recipe Calorie Calculator</h3>
+          <p>
+            Knowing your target numbers is only half the battle; translating those numbers into meals requires daily tracking. A <strong>food calorie calculator</strong> and a <strong>recipe calorie calculator</strong> make this process seamless.
+          </p>
+          <p>
+            Calorie density is the number of calories in a specific weight of food (kcal/g). Foods high in water and fiber (like leafy vegetables, fruits, and lean proteins) have low calorie densities. Foods rich in fats or processed sugars (like cooking oils, butter, cheese, and pastries) have high calorie densities.
+          </p>
+          <p>
+            By using a recipe calorie calculator, you can add individual ingredients dynamically, specify the exact servings, and analyze the total energy density ratio of your meals. This lets you identify high-density ingredients and substitute them to create large, satisfying, voluminous meals that keep you full while staying under your target calorie limits.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-ink font-display-sm">7. Understanding Macronutrient Energy Ratios</h3>
+          <p>
+            Once your calorie goals are set, organizing those calories into macronutrients optimizes your body composition:
+          </p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left border-collapse border border-hairline font-mono my-4">
+              <thead>
+                <tr class="bg-canvas-soft-2 text-ink border-b border-hairline">
+                  <th class="p-2.5 font-bold">Macronutrient</th>
+                  <th class="p-2.5 font-bold">Energy Value</th>
+                  <th class="p-2.5 font-bold">Primary Physiological Role</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-hairline text-body">
+                <tr>
+                  <td class="p-2.5 font-semibold text-ink">Protein</td>
+                  <td class="p-2.5">4 kcal / gram</td>
+                  <td class="p-2.5">Muscle repair, tissue synthesis, high satiety trigger</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-semibold text-ink">Carbohydrates</td>
+                  <td class="p-2.5">4 kcal / gram</td>
+                  <td class="p-2.5">Glycogen restoration, workout fuel, brain metabolism</td>
+                </tr>
+                <tr>
+                  <td class="p-2.5 font-semibold text-ink">Fats</td>
+                  <td class="p-2.5">9 kcal / gram</td>
+                  <td class="p-2.5">Hormonal production, vitamin absorption, cellular structure</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Adjusting these splits according to your metabolic requirements helps you maintain high energy levels, optimize workout recovery, and stick to your calorie goals comfortably.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
