@@ -22,7 +22,7 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
     <nav class="hidden md:flex gap-1 items-center">
       <a 
         href="/daily-calculator" 
-        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+        class={`text-sm font-medium px-3 py-1.5 rounded-full transition-all ${
           cleanPath === "/daily-calculator" 
             ? "bg-canvas-soft-2 text-ink font-semibold" 
             : "text-body hover:text-ink hover:bg-canvas-soft-2"
@@ -32,7 +32,7 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
       </a>
       <a 
         href="/weight-loss-calculator" 
-        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+        class={`text-sm font-medium px-3 py-1.5 rounded-full transition-all ${
           cleanPath === "/weight-loss-calculator" 
             ? "bg-canvas-soft-2 text-ink font-semibold" 
             : "text-body hover:text-ink hover:bg-canvas-soft-2"
@@ -42,7 +42,7 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
       </a>
       <a 
         href="/maintenance-calculator" 
-        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+        class={`text-sm font-medium px-3 py-1.5 rounded-full transition-all ${
           cleanPath === "/maintenance-calculator" 
             ? "bg-canvas-soft-2 text-ink font-semibold" 
             : "text-body hover:text-ink hover:bg-canvas-soft-2"
@@ -52,7 +52,7 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
       </a>
       <a 
         href="/recipe-calculator" 
-        class={`text-xs font-medium px-3 py-1.5 rounded-full transition-all ${
+        class={`text-sm font-medium px-3 py-1.5 rounded-full transition-all ${
           cleanPath === "/recipe-calculator" 
             ? "bg-canvas-soft-2 text-ink font-semibold" 
             : "text-body hover:text-ink hover:bg-canvas-soft-2"
@@ -105,11 +105,9 @@ const cleanPath = pathname.replace(/\/$/, ""); // normalize trailing slashes
         </svg>
       </button>
 
-      <span class="font-caption-mono text-[10px] bg-cyan-soft text-cyan-deep border border-cyan-deep/15 px-2 py-0.5 rounded-full font-semibold hidden sm:inline">
-        Web App v1.0
-      </span>
 
       <!-- Hamburger button (mobile only) -->
+
       <button
         id="mobile-menu-btn"
         type="button"
