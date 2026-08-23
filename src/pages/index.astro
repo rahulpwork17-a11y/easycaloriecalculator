@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DailyCalc from '../components/DailyCalc.astro';
 import EnergyConverter from '../components/EnergyConverter.astro';
+import FAQSection from '../components/FAQSection.astro';
 ---
 
 <Layout title="Calorie Calculator - Free Daily Calorie Intake Calculator" description="Use our free calorie calculator to estimate your daily energy needs. Compare BMR & TDEE formulas. Includes a maintenance calorie calculator, food calorie calculator, calorie calculator for weight loss, recipe calorie calculator, and calorie calculator to gain weight.">
@@ -342,76 +343,8 @@ import EnergyConverter from '../components/EnergyConverter.astro';
         </div>
       </div>
 
-      <!-- FAQ details Accordions -->
-      <div id="faqs" class="space-y-4 pt-6 border-t border-hairline">
-        <h3 class="text-lg font-bold text-ink mb-6 text-center font-display-sm">Frequently Asked Questions</h3>
-
-        <!-- FAQ 1 -->
-        <details class="group bg-canvas border border-hairline rounded-lg p-5 shadow-level-1 cursor-pointer [&_summary::-webkit-details-marker]:hidden">
-          <summary class="flex justify-between items-center text-sm font-semibold text-ink select-none font-body-md-strong list-none">
-            What is BMR and TDEE?
-            <span class="transition group-open:rotate-180 text-mute">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>
-            </span>
-          </summary>
-          <div class="text-xs text-body leading-relaxed mt-4 pt-3 border-t border-hairline space-y-2">
-            <p>
-              <strong>Basal Metabolic Rate (BMR)</strong> is the baseline energy expenditure your body burns at complete rest just to keep vital functions (breathing, organs, circulation) operating.
-            </p>
-            <p>
-              <strong>Total Daily Energy Expenditure (TDEE)</strong> is the actual number of calories your body burns in 24 hours including physical activity. It is calculated by multiplying your BMR by your physical activity multiplier factor.
-            </p>
-          </div>
-        </details>
-
-        <!-- FAQ 2 -->
-        <details class="group bg-canvas border border-hairline rounded-lg p-5 shadow-level-1 cursor-pointer [&_summary::-webkit-details-marker]:hidden">
-          <summary class="flex justify-between items-center text-sm font-semibold text-ink select-none font-body-md-strong list-none">
-            How many calories should I reduce to lose weight safely?
-            <span class="transition group-open:rotate-180 text-mute">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>
-            </span>
-          </summary>
-          <div class="text-xs text-body leading-relaxed mt-4 pt-3 border-t border-hairline space-y-2">
-            <p>
-              Generally, a daily deficit of <strong>500 calories</strong> will yield roughly 1.0 lbs (0.5 kg) of fat loss per week, and a deficit of <strong>250 calories</strong> targets about 0.5 lbs (0.25 kg) per week.
-            </p>
-            <p>
-              To prevent metabolic deceleration and hormonal imbalances, it is highly recommended that men do not consume fewer than 1,200 calories per day, and women do not consume fewer than 1,000 calories per day, unless under direct medical guidance.
-            </p>
-          </div>
-        </details>
-
-        <!-- FAQ 3 -->
-        <details class="group bg-canvas border border-hairline rounded-lg p-5 shadow-level-1 cursor-pointer [&_summary::-webkit-details-marker]:hidden">
-          <summary class="flex justify-between items-center text-sm font-semibold text-ink select-none font-body-md-strong list-none">
-            How are macro-nutrient calculations derived?
-            <span class="transition group-open:rotate-180 text-mute">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-              </svg>
-            </span>
-          </summary>
-          <div class="text-xs text-body leading-relaxed mt-4 pt-3 border-t border-hairline space-y-2">
-            <p>
-              Macronutrient needs are determined by allocating target daily energy values into percentages:
-            </p>
-            <ul class="list-disc pl-4 space-y-1 mt-1">
-              <li><strong>Balanced:</strong> 50% Carbs, 20% Protein, 30% Fat. Good for overall health and general lifestyle.</li>
-              <li><strong>High Protein:</strong> 40% Carbs, 30% Protein, 30% Fat. Optimal for weight lifters and muscle retention.</li>
-              <li><strong>Low Carb:</strong> 25% Carbs, 35% Protein, 40% Fat. Helps manage blood sugar and insulin spikes.</li>
-              <li><strong>Keto:</strong> 5% Carbs, 25% Protein, 70% Fat. Induces metabolic ketosis where the body burns fat for primary fuel.</li>
-            </ul>
-            <p class="mt-2 text-[11px] text-mute">
-              Calorie-to-gram conversion values: Carbohydrates and Proteins have 4 kcal per gram; Fats have 9 kcal per gram.
-            </p>
-          </div>
-        </details>
-      </div>
+      <!-- FAQ Section -->
+      <FAQSection />
     </div>
   </section>
 

@@ -1,0 +1,97 @@
+---
+const faqs = [
+  {
+    question: "What is a calorie deficit calculator?",
+    answer: "A calorie deficit calculator is a tool that estimates how many calories you need to consume daily to be in a caloric deficit. A caloric deficit occurs when you consume fewer calories than your body burns (your Total Daily Energy Expenditure or TDEE), forcing it to utilize stored fat for energy, which leads to weight loss."
+  },
+  {
+    question: "How to set a calorie deficit calculator for free?",
+    answer: "You can easily access and set a calorie deficit calculator for free on our platform. Simply input your gender, age, weight, height, and activity level to estimate your maintenance calories (TDEE). Then, choose a sustainable deficit target—typically 250 to 500 calories below maintenance—to automatically calculate your daily calorie budget without any fees or subscriptions."
+  },
+  {
+    question: "How much weight will I lose using a calorie calculator?",
+    answer: "A calorie calculator can estimate your weight loss rate based on the size of your caloric deficit. Since one pound of body fat is roughly equivalent to 3,500 calories, a daily deficit of 500 calories (3,500 calories per week) will result in a weight loss of approximately 1 pound (0.45 kg) per week, while a 250-calorie daily deficit targets about 0.5 pounds per week."
+  },
+  {
+    question: "What is the most accurate calorie calculator?",
+    answer: "The most accurate calorie calculators use validated clinical formulas like Mifflin-St Jeor, Revised Harris-Benedict, or Katch-McArdle to estimate BMR, and multiply it by a physical activity multiplier. For individuals who know their body fat percentage, the Katch-McArdle formula is the most accurate because it calculates energy needs based on lean body mass rather than total weight."
+  },
+  {
+    question: "What is my calorie deficit calculator?",
+    answer: "Your calorie deficit calculator is a personalized tool that calculates your custom daily calorie target for weight loss. It takes your unique metabolic profile (calculated from your age, gender, weight, and height) and active energy output (TDEE), and subtracts a safe deficit margin (usually 10% to 20% below maintenance) to determine your daily target."
+  },
+  {
+    question: "How to lose weight using a calorie calculator?",
+    answer: "To lose weight using a calorie calculator, first enter your metrics to find your Total Daily Energy Expenditure (TDEE). Subtract 250 to 500 calories from this number to find your weight loss target. Track your daily food intake to ensure you stay under this target, and aim for a high-protein distribution to preserve lean muscle tissue."
+  },
+  {
+    question: "What is my calorie maintenance calculator?",
+    answer: "A calorie maintenance calculator estimates your TDEE (Total Daily Energy Expenditure), which is the exact number of calories your body burns in a day to maintain your current weight. Eating this exact amount keeps you in energy balance, meaning you will neither lose nor gain weight."
+  },
+  {
+    question: "How can a calorie calculator help me achieve weight loss goals?",
+    answer: "A calorie calculator removes the guesswork from dieting by providing a clear, scientifically estimated daily calorie limit. It helps you understand your metabolic baseline, establishes a realistic weight loss timeline, prevents you from eating too little (which can slow metabolism), and helps you balance macros for optimal health and muscle retention."
+  },
+  {
+    question: "Why is it important to know my daily calorie needs?",
+    answer: "Knowing your daily calorie needs is crucial because energy balance is the fundamental driver of body weight changes. Without this baseline, you might overeat and stall your weight loss, or undereeat to an unhealthy degree, causing muscle loss, fatigue, nutritional deficiencies, and metabolic down-regulation."
+  },
+  {
+    question: "How many calories should I eat in a day?",
+    answer: "The number of calories you should eat in a day depends on your age, sex, height, weight, activity level, and goals. For weight maintenance, average adult women need about 1,800 to 2,200 calories per day, while average adult men need 2,200 to 2,800. For weight loss, you should reduce this baseline by 250 to 500 calories."
+  },
+  {
+    question: "How many calories do you burn in a day?",
+    answer: "The total calories you burn in a day (TDEE) is the sum of your Basal Metabolic Rate (BMR, calories burned at rest), the Thermic Effect of Activity (TEA, exercise and daily movements), Non-Exercise Activity Thermogenesis (NEAT, fidgeting and walking), and the Thermic Effect of Food (TEF, energy used to digest food). This varies widely from 1,600 to over 3,500 calories depending on your size and lifestyle."
+  },
+  {
+    question: "How many calories do you burn walking a mile?",
+    answer: "On average, you burn approximately 80 to 100 calories walking a mile. The exact number depends on your body weight and walking speed; heavier individuals burn more calories per mile because it takes more energy to move a larger mass over the same distance."
+  },
+  {
+    question: "How many calories should you eat to gain muscle?",
+    answer: "To gain muscle, you should consume a small caloric surplus of about 250 to 500 calories above your maintenance needs (TDEE), combined with regular resistance training. This surplus provides the extra energy and building blocks (amino acids) required to synthesize new muscle tissue without accumulating excessive body fat."
+  }
+];
+
+// Generate JSON-LD Schema
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": `<p>${faq.answer}</p>`
+    }
+  }))
+};
+---
+
+<!-- FAQ Schema (JSON-LD) for SEO -->
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<div id="faqs" class="space-y-4 pt-6 border-t border-hairline scroll-mt-20">
+  <h3 class="text-xl md:text-2xl font-bold text-ink mb-8 text-center font-display-sm">
+    Frequently Asked Questions
+  </h3>
+
+  <div class="grid grid-cols-1 gap-4 max-w-3xl mx-auto">
+    {faqs.map((faq) => (
+      <details class="group bg-canvas border border-hairline rounded-lg p-5 shadow-level-1 cursor-pointer [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex justify-between items-center text-sm font-semibold text-ink select-none font-body-md-strong list-none">
+          {faq.question}
+          <span class="transition group-open:rotate-180 text-mute">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </span>
+        </summary>
+        <div class="text-xs md:text-sm text-body leading-relaxed mt-4 pt-3 border-t border-hairline">
+          <p>{faq.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
