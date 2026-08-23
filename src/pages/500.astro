@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Server Error";
+const description = "Something went wrong on our end. Please try again later.";
+---
+
+<Layout title={title} description={description}>
+  <main class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full text-center">
+      <div class="mb-8 animate-fade-in-up">
+        <span class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-error-soft text-error dark:bg-error-soft dark:text-error-deep">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </span>
+      </div>
+      
+      <h1 class="font-display-lg text-ink mb-4 animate-fade-in-up" style="animation-delay: 0.1s;">
+        500
+      </h1>
+      
+      <h2 class="font-display-md text-ink mb-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+        Server Error
+      </h2>
+      
+      <p class="font-body-lg text-body mb-8 animate-fade-in-up" style="animation-delay: 0.3s;">
+        Something went wrong on our end. Our team has been notified and we're working to fix it. Please try again in a few moments.
+      </p>
+      
+      <div class="space-y-4 animate-fade-in-up" style="animation-delay: 0.4s;">
+        <button 
+          onclick="window.location.reload()"
+          class="inline-flex items-center justify-center px-6 py-3 bg-primary text-on-primary rounded-lg font-body-md-strong hover:opacity-90 transition-opacity shadow-level-2 w-full"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Refresh Page
+        </button>
+        
+        <a 
+          href="/" 
+          class="inline-flex items-center justify-center px-6 py-3 border border-hairline-strong dark:border-hairline-strong rounded-lg font-body-md-strong hover:bg-canvas-soft-2 dark:hover:bg-canvas-soft-2 transition-colors shadow-level-1 w-full"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Go to Homepage
+        </a>
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-hairline animate-fade-in-up" style="animation-delay: 0.5s;">
+        <p class="font-body-sm text-mute mb-4">
+          If the problem persists, please let us know:
+        </p>
+        <a 
+          href="/contact" 
+          class="font-body-sm-strong text-primary hover:underline transition-colors"
+        >
+          Contact Support
+        </a>
+      </div>
+      
+      <details class="mt-8 text-left animate-fade-in-up" style="animation-delay: 0.6s;">
+        <summary class="font-body-sm-strong text-mute cursor-pointer select-none mb-2">
+          Technical Details (for support)
+        </summary>
+        <div class="font-caption-mono text-mute bg-canvas-soft-2 dark:bg-canvas-soft-2 rounded-lg p-4 overflow-auto max-h-40">
+          <pre id="error-details">Error details will appear here if available</pre>
+        </div>
+      </details>
+    </div>
+  </main>
+  
+  <script is:inline>
+    // Attempt to capture any error details from sessionStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const errorDetails = sessionStorage.getItem('lastError');
+      const detailsEl = document.getElementById('error-details');
+      
+      if (errorDetails && detailsEl) {
+        try {
+          const parsed = JSON.parse(errorDetails);
+          detailsEl.textContent = JSON.stringify(parsed, null, 2);
+        } catch {
+          detailsEl.textContent = errorDetails;
+        }
+        // Clear after displaying
+        sessionStorage.removeItem('lastError');
+      }
+    });
+  </script>
+</Layout>
